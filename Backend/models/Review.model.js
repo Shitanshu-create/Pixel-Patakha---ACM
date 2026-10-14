@@ -1,0 +1,34 @@
+import mongoose from 'mongoose';
+
+const reviewSchema = new mongoose.Schema(
+  {
+    submission: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Submission',
+      required: true,
+    },
+    judge: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: true,
+    },
+    score: {
+      type: Number,
+      required: true,
+      min: 0,
+      max: 100,
+    },
+    feedback: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
+
+reviewSchema.index({ submission: 1, judge: 1 }, { unique: true });
+
+export default mongoose.model('Review', reviewSchema);
