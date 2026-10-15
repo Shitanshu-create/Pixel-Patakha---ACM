@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import useAsync from '../../common/hooks/useAsync.js';
 import PageHeader from '../../../components/ui/PageHeader.jsx';
 import Card from '../../../components/ui/Card.jsx';
 import Badge from '../../../components/ui/Badge.jsx';
@@ -16,26 +16,11 @@ export default function SubmissionDetailPage() {
   const { id } = useParams();
   useDocumentTitle('Submission Evaluation');
 
-  const [submission, setSubmission] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  const fetchDetail = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const res = await getSubmissionById(id);
-      setSubmission(res);
-    } catch (err) {
-      setError(err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchDetail();
-  }, [id]);
+  const { data: submission, loading, error, refetch: fetchDetail } = useAsync(
+    () => getSubmissionById(id),
+    true,
+    [id]
+  );
 
   if (loading) {
     return (

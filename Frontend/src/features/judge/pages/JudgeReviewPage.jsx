@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
+import useAsync from '../../common/hooks/useAsync.js';
 import PageHeader from '../../../components/ui/PageHeader.jsx';
 import Card from '../../../components/ui/Card.jsx';
 import Badge from '../../../components/ui/Badge.jsx';
@@ -18,36 +18,25 @@ export default function JudgeReviewPage() {
   const { id } = useParams();
   useDocumentTitle('Score Submission');
 
-  const [submission, setSubmission] = useState(null);
-  const [existingReview, setExistingReview] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const { data, loading, error, refetch: fetchData } = useAsync(async () => {
+    const [subData, reviewsData] = await Promise.all([
+      getSubmissionById(id),
+      getReviews(),
+    ]);
 
-  const fetchData = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const [subData, reviewsData] = await Promise.all([
-        getSubmissionById(id),
-        getReviews(),
-      ]);
-      setSubmission(subData);
+    const foundReview = reviewsData?.find((r) => {
+      const subId = r.submission?._id || r.submission;
+      return subId === id;
+    });
 
-      const foundReview = reviewsData?.find((r) => {
-        const subId = r.submission?._id || r.submission;
-        return subId === id;
-      });
-      setExistingReview(foundReview || null);
-    } catch (err) {
-      setError(err);
-    } finally {
-      setLoading(false);
-    }
-  };
+    return {
+      submission: subData,
+      existingReview: foundReview || null,
+    };
+  }, true, [id]);
 
-  useEffect(() => {
-    fetchData();
-  }, [id]);
+  const submission = data?.submission || null;
+  const existingReview = data?.existingReview || null;
 
   if (loading) {
     return (
@@ -105,8 +94,8 @@ export default function JudgeReviewPage() {
           <ReviewForm
             submissionId={id}
             initialReview={existingReview}
-            onReviewSubmitted={(res) => {
-              setExistingReview(res.review || res);
+            onReviewSubmitted={() => {
+              fetchData();
             }}
           />
         </div>

@@ -9,14 +9,12 @@ import apiResponse from '../utils/apiResponse.js';
 import ApiError from '../utils/ApiError.js';
 
 export const updateCompetition = asyncHandler(async (req, res) => {
-  let competition = await Competition.findOne();
-  if (!competition) {
-    competition = new Competition(req.body);
-  } else {
-    Object.assign(competition, req.body);
-  }
+  const competition = await Competition.findOneAndUpdate(
+    { key: 'main' },
+    { $set: req.body },
+    { upsert: true, new: true, setDefaultsOnInsert: true }
+  );
 
-  await competition.save();
   await cacheService.del(COMPETITION_CACHE_KEY);
 
   return apiResponse(res, 200, 'Competition settings updated successfully', competition);

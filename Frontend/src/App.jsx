@@ -1,8 +1,7 @@
-import React, { Suspense, lazy } from 'react';
+import { Suspense, lazy } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { AuthProvider } from './features/auth/context/AuthContext';
-import { ToastProvider } from './features/common/context/ToastContext';
-import ProtectedRoute from './features/auth/components/ProtectedRoute';
+import { AuthProvider } from './features/auth/context/AuthContext.jsx';
+import { ToastProvider } from './features/common/context/ToastContext.jsx';
 import RoleRoute from './features/auth/components/RoleRoute';
 import PublicOnlyRoute from './features/auth/components/PublicOnlyRoute';
 import PublicLayout from './components/layout/PublicLayout';

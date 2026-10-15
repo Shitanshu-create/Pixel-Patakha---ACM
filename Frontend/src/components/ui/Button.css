@@ -38,7 +38,7 @@
 }
 
 .btn--primary:hover:not(:disabled) {
-  background-color: #ffeb60;
+  background-color: color-mix(in srgb, var(--color-arcade-yellow) 85%, white);
   transform: translateY(-2px);
   box-shadow: 4px 6px 0 var(--color-voxel-purple);
   color: var(--color-cosmic-black);
@@ -56,6 +56,19 @@
   background-color: color-mix(in srgb, var(--color-electric-cyan) 15%, var(--color-deep-navy));
   transform: translateY(-2px);
   color: var(--color-cloud-white);
+}
+
+/* Outline */
+.btn--outline {
+  background-color: transparent;
+  color: var(--color-cloud-white);
+  border: 2px solid var(--border-subtle);
+}
+
+.btn--outline:hover:not(:disabled) {
+  border-color: var(--color-electric-cyan);
+  color: var(--color-electric-cyan);
+  background-color: color-mix(in srgb, var(--color-electric-cyan) 10%, transparent);
 }
 
 /* Danger */

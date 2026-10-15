@@ -1,8 +1,7 @@
-import { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import authApi from '../api/authApi.js';
 import { getToken, setToken, removeToken } from '../utils/tokenStorage.js';
-
-const AuthContext = createContext(null);
+import AuthContext from './AuthContext.js';
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
@@ -29,8 +28,12 @@ export function AuthProvider({ children }) {
         setUser(me);
         setRole(me?.role || null);
       } catch (err) {
-        console.warn('Session restoration failed:', err.message);
-        logout();
+        // Only log out on 401 Unauthorized; keep session token on network blips or server 5xx
+        if (err?.status === 401) {
+          logout();
+        } else {
+          console.warn('Session restoration failed:', err?.message || err);
+        }
       } finally {
         setIsLoading(false);
       }
@@ -48,8 +51,7 @@ export function AuthProvider({ children }) {
     };
   }, [logout]);
 
-  const handleAuthSuccess = (res) => {
-    // res is { team, token } or { user, token }
+  const adoptSession = useCallback((res) => {
     const authToken = res?.token;
     const authEntity = res?.team || res?.user;
 
@@ -61,21 +63,22 @@ export function AuthProvider({ children }) {
       setRole(authEntity.role);
     }
     return authEntity;
-  };
+  }, []);
 
   const registerTeam = async (data) => {
-    const res = await authApi.registerTeam(data);
-    return handleAuthSuccess(res);
+    // Return registration result without auto-logging in immediately
+    // Allows user to see registration confirmation and click "Go To Dashboard"
+    return await authApi.registerTeam(data);
   };
 
   const loginTeam = async (credentials) => {
     const res = await authApi.loginTeam(credentials);
-    return handleAuthSuccess(res);
+    return adoptSession(res);
   };
 
   const loginStaff = async (credentials) => {
     const res = await authApi.loginStaff(credentials);
-    return handleAuthSuccess(res);
+    return adoptSession(res);
   };
 
   const value = {
@@ -83,6 +86,7 @@ export function AuthProvider({ children }) {
     role,
     isAuthenticated: !!user,
     isLoading,
+    adoptSession,
     registerTeam,
     loginTeam,
     loginStaff,
@@ -92,12 +96,5 @@ export function AuthProvider({ children }) {
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
-export function useAuth() {
-  const ctx = useContext(AuthContext);
-  if (!ctx) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-  return ctx;
-}
-
-export default AuthContext;
+export { useAuth } from './AuthContext.js';
+export default AuthProvider;

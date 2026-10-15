@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Outlet, NavLink, Link, useLocation } from 'react-router-dom';
+import { Outlet, NavLink, Link } from 'react-router-dom';
 import PixelDiamondLogo from '../pixel/PixelDiamondLogo.jsx';
 import Badge from '../ui/Badge.jsx';
 import Button from '../ui/Button.jsx';
@@ -14,7 +14,6 @@ import './DashboardLayout.css';
 export default function DashboardLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { user, role, logout } = useAuth();
-  const location = useLocation();
 
   const getLinks = () => {
     switch (role) {

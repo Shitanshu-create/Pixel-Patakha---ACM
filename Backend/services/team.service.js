@@ -30,7 +30,8 @@ export const listTeams = async ({ page = 1, limit = 10, search = '' }) => {
 
   const query = {};
   if (search && search.trim() !== '') {
-    const searchRegex = new RegExp(search.trim(), 'i');
+    const escaped = search.trim().replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const searchRegex = new RegExp(escaped, 'i');
     query.$or = [
       { teamName: searchRegex },
       { leaderEmail: searchRegex },

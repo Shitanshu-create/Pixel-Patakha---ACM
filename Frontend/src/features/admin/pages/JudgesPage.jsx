@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import useAsync from '../../common/hooks/useAsync.js';
 import PageHeader from '../../../components/ui/PageHeader.jsx';
-import Card from '../../../components/ui/Card.jsx';
 import DataTable from '../../../components/ui/DataTable.jsx';
 import Button from '../../../components/ui/Button.jsx';
 import FormField from '../../../components/ui/FormField.jsx';
@@ -20,31 +20,13 @@ export default function JudgesPage() {
   useDocumentTitle('Manage Judges');
   const toast = useToast();
 
-  const [judges, setJudges] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const { data: judgesData, loading, error, refetch: fetchJudgesList } = useAsync(getJudges, true);
+  const judges = judgesData || [];
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState({ name: '', email: '', password: '' });
   const [formError, setFormError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const fetchJudgesList = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const res = await getJudges();
-      setJudges(res || []);
-    } catch (err) {
-      setError(err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchJudgesList();
-  }, []);
 
   const handleCreateJudge = async (e) => {
     e.preventDefault();

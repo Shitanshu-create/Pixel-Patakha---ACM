@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import PixelDiamondLogo from '../pixel/PixelDiamondLogo.jsx';
 import Button from '../ui/Button.jsx';
@@ -14,9 +14,11 @@ export default function Navbar() {
   const location = useLocation();
 
   // Close drawer on route change
-  useEffect(() => {
+  const [prevLocationKey, setPrevLocationKey] = useState(location.key);
+  if (location.key !== prevLocationKey) {
+    setPrevLocationKey(location.key);
     setIsOpen(false);
-  }, [location.pathname, location.hash]);
+  }
 
   const getAnchorHref = (href) => {
     return location.pathname === '/' ? href : `/${href}`;

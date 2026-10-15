@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect, useMemo } from 'react';
 import './FileDropzone.css';
 
 const ALLOWED_EXTS = ['.png', '.jpg', '.jpeg', '.webp', '.pdf'];
@@ -13,6 +13,22 @@ export default function FileDropzone({
   const [isDragOver, setIsDragOver] = useState(false);
   const [clientError, setClientError] = useState('');
   const inputRef = useRef(null);
+
+  // Generate and manage object URLs cleanly with cleanup on unmount/files change
+  const previewUrls = useMemo(() => {
+    return files.map((file) => {
+      const isImage = file.type?.startsWith('image/') || /\.(png|jpg|jpeg|webp)$/i.test(file.name);
+      return isImage ? URL.createObjectURL(file) : null;
+    });
+  }, [files]);
+
+  useEffect(() => {
+    return () => {
+      previewUrls.forEach((url) => {
+        if (url) URL.revokeObjectURL(url);
+      });
+    };
+  }, [previewUrls]);
 
   const validateAndAdd = (newFileList) => {
     setClientError('');
@@ -70,7 +86,12 @@ export default function FileDropzone({
         onClick={() => inputRef.current?.click()}
         role="button"
         tabIndex={0}
-        onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && inputRef.current?.click()}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            inputRef.current?.click();
+          }
+        }}
       >
         <input
           ref={inputRef}
@@ -104,15 +125,17 @@ export default function FileDropzone({
       {files.length > 0 && (
         <div className="file-previews">
           {files.map((file, idx) => {
-            const isImage = file.type?.startsWith('image/') || /\.(png|jpg|jpeg|webp)$/i.test(file.name);
-            const previewUrl = isImage ? URL.createObjectURL(file) : null;
+            const previewUrl = previewUrls[idx];
 
             return (
               <div key={`${file.name}-${idx}`} className="file-preview-item">
                 <button
                   type="button"
                   className="file-preview-item__remove"
-                  onClick={() => handleRemove(idx)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleRemove(idx);
+                  }}
                   aria-label={`Remove file ${file.name}`}
                 >
                   ✕
@@ -122,7 +145,6 @@ export default function FileDropzone({
                     src={previewUrl}
                     alt={file.name}
                     className="file-preview-item__thumb"
-                    onLoad={() => URL.revokeObjectURL(previewUrl)}
                   />
                 ) : (
                   <div className="file-preview-item__placeholder">

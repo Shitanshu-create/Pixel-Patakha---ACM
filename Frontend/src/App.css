@@ -3,6 +3,9 @@
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
-  position: relative;
-  overflow-x: hidden;
+  overflow-x: clip;
+}
+
+html {
+  scroll-padding-top: calc(var(--navbar-height, 68px) + var(--strip-height, 32px));
 }

@@ -6,11 +6,10 @@ let redisClient = null;
 try {
   redisClient = new Redis(redisUrl, {
     maxRetriesPerRequest: 1,
+    enableOfflineQueue: false,
     retryStrategy(times) {
-      if (times > 3) {
-        return null;
-      }
-      return Math.min(times * 100, 2000);
+      // Keep reconnecting with exponential backoff up to 5s, never return null
+      return Math.min(times * 200, 5000);
     },
     lazyConnect: true,
   });
@@ -20,7 +19,7 @@ try {
   });
 
   redisClient.on('error', (err) => {
-    console.warn(`Redis warning: ${err.message}. Proceeding with cache fallback.`);
+    console.warn(`Redis notice: ${err.message}. Running with DB fallback.`);
   });
 } catch (err) {
   console.warn(`Redis init error: ${err.message}`);

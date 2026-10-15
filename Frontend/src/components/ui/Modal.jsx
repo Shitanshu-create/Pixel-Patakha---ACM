@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useId } from 'react';
 import Button from './Button.jsx';
 import './Modal.css';
 
@@ -11,24 +11,64 @@ export default function Modal({
   maxWidth,
 }) {
   const dialogRef = useRef(null);
+  const previousActiveElement = useRef(null);
+  const onCloseRef = useRef(onClose);
+  const titleId = useId();
+
+  useEffect(() => {
+    onCloseRef.current = onClose;
+  });
 
   useEffect(() => {
     if (!isOpen) return;
 
+    // Remember currently active element to restore focus on close
+    previousActiveElement.current = document.activeElement;
+
+    // Prevent body scrolling
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    // Focus modal dialog only once upon opening
+    const timer = setTimeout(() => {
+      dialogRef.current?.focus();
+    }, 50);
+
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') {
-        onClose?.();
+        onCloseRef.current?.();
+      }
+
+      // Simple focus trap
+      if (e.key === 'Tab' && dialogRef.current) {
+        const focusable = dialogRef.current.querySelectorAll(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        if (focusable.length > 0) {
+          const first = focusable[0];
+          const last = focusable[focusable.length - 1];
+          if (e.shiftKey && document.activeElement === first) {
+            last.focus();
+            e.preventDefault();
+          } else if (!e.shiftKey && document.activeElement === last) {
+            first.focus();
+            e.preventDefault();
+          }
+        }
       }
     };
 
     document.addEventListener('keydown', handleKeyDown);
-    // Focus first interactive element
-    dialogRef.current?.focus();
 
     return () => {
+      clearTimeout(timer);
+      document.body.style.overflow = originalOverflow;
       document.removeEventListener('keydown', handleKeyDown);
+      if (previousActiveElement.current && typeof previousActiveElement.current.focus === 'function') {
+        previousActiveElement.current.focus();
+      }
     };
-  }, [isOpen, onClose]);
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
@@ -36,7 +76,7 @@ export default function Modal({
     <div
       className="modal-overlay"
       onClick={(e) => {
-        if (e.target === e.currentTarget) onClose?.();
+        if (e.target === e.currentTarget) onCloseRef.current?.();
       }}
       role="presentation"
     >
@@ -45,16 +85,20 @@ export default function Modal({
         className="modal-dialog"
         role="dialog"
         aria-modal="true"
-        aria-labelledby={title ? 'modal-dialog-title' : undefined}
+        aria-labelledby={title ? titleId : undefined}
         tabIndex={-1}
         style={maxWidth ? { maxWidth } : undefined}
       >
         <div className="modal-header">
-          {title && <h3 id="modal-dialog-title" className="modal-title">{title}</h3>}
+          {title && (
+            <h3 id={titleId} className="modal-title">
+              {title}
+            </h3>
+          )}
           <button
             type="button"
             className="modal-close"
-            onClick={onClose}
+            onClick={() => onCloseRef.current?.()}
             aria-label="Close dialog"
           >
             ✕

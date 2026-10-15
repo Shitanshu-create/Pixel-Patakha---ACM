@@ -3,11 +3,11 @@ import ApiError from '../utils/ApiError.js';
 import asyncHandler from '../utils/asyncHandler.js';
 
 export const getCompetitionSettings = async () => {
-  let competition = await Competition.findOne();
-  if (!competition) {
-    competition = await Competition.create({});
-  }
-  return competition;
+  return await Competition.findOneAndUpdate(
+    { key: 'main' },
+    { $setOnInsert: { key: 'main' } },
+    { upsert: true, new: true, setDefaultsOnInsert: true }
+  );
 };
 
 export const checkRegistrationOpen = asyncHandler(async (req, res, next) => {

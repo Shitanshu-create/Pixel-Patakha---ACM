@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Card from '../../../components/ui/Card.jsx';
 import Button from '../../../components/ui/Button.jsx';
 import FormField from '../../../components/ui/FormField.jsx';
@@ -12,18 +12,21 @@ export default function ReviewForm({
   initialReview,
   onReviewSubmitted,
 }) {
-  const [score, setScore] = useState('');
-  const [feedback, setFeedback] = useState('');
+  const [score, setScore] = useState(
+    initialReview?.score !== undefined ? String(initialReview.score) : ''
+  );
+  const [feedback, setFeedback] = useState(initialReview?.feedback || '');
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [successMsg, setSuccessMsg] = useState('');
 
-  useEffect(() => {
-    if (initialReview) {
-      setScore(initialReview.score !== undefined ? String(initialReview.score) : '');
-      setFeedback(initialReview.feedback || '');
-    }
-  }, [initialReview]);
+  // Update form if initialReview changes from external fetch
+  const [prevReview, setPrevReview] = useState(initialReview);
+  if (initialReview !== prevReview) {
+    setPrevReview(initialReview);
+    setScore(initialReview?.score !== undefined ? String(initialReview.score) : '');
+    setFeedback(initialReview?.feedback || '');
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();

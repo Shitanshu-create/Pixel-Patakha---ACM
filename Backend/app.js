@@ -12,13 +12,15 @@ const __dirname = path.dirname(__filename);
 const app = express();
 
 // CORS configuration
+const allowedOrigins = clientUrl === '*' ? ['*'] : clientUrl.split(',').map((url) => url.trim());
+
 app.use(
   cors({
     origin: (origin, callback) => {
-      if (!origin || origin === clientUrl || clientUrl === '*') {
+      if (!origin || allowedOrigins.includes('*') || allowedOrigins.includes(origin) || origin.includes('localhost') || origin.includes('127.0.0.1')) {
         return callback(null, true);
       }
-      return callback(null, true);
+      return callback(new Error(`CORS policy: origin ${origin} is not allowed`));
     },
     credentials: true,
   })

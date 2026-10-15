@@ -11,7 +11,7 @@ export const toDatetimeLocal = (isoString) => {
     const hours = pad(date.getHours());
     const minutes = pad(date.getMinutes());
     return `${year}-${month}-${day}T${hours}:${minutes}`;
-  } catch (err) {
+  } catch {
     return '';
   }
 };

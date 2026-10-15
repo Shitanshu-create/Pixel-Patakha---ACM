@@ -1,10 +1,11 @@
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth.js';
 import { getRoleHome } from '../utils/roleHome.js';
 import Spinner from '../../../components/ui/Spinner.jsx';
 
 export default function RoleRoute({ allowedRoles = [], children }) {
   const { role, isLoading, isAuthenticated } = useAuth();
+  const location = useLocation();
 
   if (isLoading) {
     return (
@@ -14,8 +15,11 @@ export default function RoleRoute({ allowedRoles = [], children }) {
     );
   }
 
+  const isStaffPath = allowedRoles.includes('admin') || allowedRoles.includes('judge');
+  const loginPath = isStaffPath ? '/staff/login' : '/login';
+
   if (!isAuthenticated) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to={loginPath} state={{ from: location }} replace />;
   }
 
   const hasAccess = Array.isArray(allowedRoles)

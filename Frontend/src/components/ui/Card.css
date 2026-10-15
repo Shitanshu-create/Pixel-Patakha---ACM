@@ -34,6 +34,16 @@
   --card-border: var(--color-panel-border);
 }
 
+.card--green {
+  --card-border: var(--color-success-green);
+}
+
+.card--glass {
+  background-color: color-mix(in srgb, var(--color-deep-navy) 75%, transparent);
+  backdrop-filter: blur(12px);
+  --card-border: var(--border-subtle);
+}
+
 /* Pixel corners */
 .card__corner {
   position: absolute;

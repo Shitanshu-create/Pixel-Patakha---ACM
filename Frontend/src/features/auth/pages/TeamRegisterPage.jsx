@@ -18,7 +18,8 @@ import '../styles/auth.css';
 
 export default function TeamRegisterPage() {
   useDocumentTitle('Team Registration');
-  const { registerTeam } = useAuth();
+  const navigate = useNavigate();
+  const { registerTeam, adoptSession } = useAuth();
   const { competition, loading: compLoading, error: compError, refetch: refetchComp } = useCompetition();
 
   const [formData, setFormData] = useState({
@@ -189,7 +190,12 @@ export default function TeamRegisterPage() {
               variant="primary"
               size="lg"
               fullWidth
-              onClick={() => navigate(ROUTES.TEAM_DASHBOARD)}
+              onClick={() => {
+                if (registeredSuccess) {
+                  adoptSession(registeredSuccess);
+                }
+                navigate(ROUTES.TEAM_DASHBOARD);
+              }}
             >
               Go To Dashboard →
             </Button>

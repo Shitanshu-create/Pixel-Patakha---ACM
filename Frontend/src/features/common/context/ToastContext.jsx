@@ -1,7 +1,6 @@
-import { createContext, useContext, useState, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import Toast from '../../../components/ui/Toast.jsx';
-
-const ToastContext = createContext(null);
+import ToastContext from './ToastContext.js';
 
 export function ToastProvider({ children }) {
   const [toasts, setToasts] = useState([]);
@@ -26,6 +25,10 @@ export function ToastProvider({ children }) {
     error: (msg, dur) => addToast({ message: msg, type: 'error', duration: dur }),
     warning: (msg, dur) => addToast({ message: msg, type: 'warning', duration: dur }),
     info: (msg, dur) => addToast({ message: msg, type: 'info', duration: dur }),
+    showSuccess: (msg, dur) => addToast({ message: msg, type: 'success', duration: dur }),
+    showError: (msg, dur) => addToast({ message: msg, type: 'error', duration: dur }),
+    showWarning: (msg, dur) => addToast({ message: msg, type: 'warning', duration: dur }),
+    showInfo: (msg, dur) => addToast({ message: msg, type: 'info', duration: dur }),
   };
 
   return (
@@ -40,12 +43,5 @@ export function ToastProvider({ children }) {
   );
 }
 
-export function useToast() {
-  const ctx = useContext(ToastContext);
-  if (!ctx) {
-    throw new Error('useToast must be used within a ToastProvider');
-  }
-  return ctx;
-}
-
-export default ToastContext;
+export { useToast } from './ToastContext.js';
+export default ToastProvider;

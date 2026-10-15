@@ -106,7 +106,7 @@
   border: none;
   border-radius: var(--radius-sm);
   font-family: var(--font-label);
-  font-size: 10px;
+  font-size: var(--fs-label-xs);
   display: flex;
   align-items: center;
   justify-content: center;

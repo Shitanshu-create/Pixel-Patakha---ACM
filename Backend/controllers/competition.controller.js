@@ -11,10 +11,11 @@ export const getCompetition = asyncHandler(async (req, res) => {
     return apiResponse(res, 200, 'Competition details fetched successfully (cached)', cached);
   }
 
-  let competition = await Competition.findOne();
-  if (!competition) {
-    competition = await Competition.create({});
-  }
+  const competition = await Competition.findOneAndUpdate(
+    { key: 'main' },
+    { $setOnInsert: { key: 'main' } },
+    { upsert: true, new: true, setDefaultsOnInsert: true }
+  );
 
   await cacheService.set(COMPETITION_CACHE_KEY, competition, 3600);
 

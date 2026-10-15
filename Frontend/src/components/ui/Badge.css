@@ -35,7 +35,7 @@
 
 .badge--purple {
   background-color: color-mix(in srgb, var(--color-voxel-purple) 20%, transparent);
-  color: #a384ff;
+  color: color-mix(in srgb, var(--color-voxel-purple) 60%, white);
   border: 1px solid var(--color-voxel-purple);
 }
 

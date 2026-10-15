@@ -6,7 +6,7 @@ import { getAnnouncements } from '../../common/api/announcementApi.js';
 import { formatDate } from '../../common/utils/formatDate.js';
 
 export default function AnnouncementsFeed() {
-  const { data: announcements, loading, error, execute: refetch } = useAsync(getAnnouncements, true);
+  const { data: announcements, loading, error } = useAsync(getAnnouncements, true);
 
   if (loading) {
     return (

@@ -32,7 +32,7 @@ export default function SubmissionPage() {
     return <ErrorState title="Failed to load submission info" onRetry={refetch} />;
   }
 
-  const handleSuccess = (newSub) => {
+  const handleSuccess = () => {
     toast.success('Your design submission has been recorded!');
     refetch();
   };

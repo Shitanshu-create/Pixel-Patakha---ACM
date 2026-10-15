@@ -48,3 +48,65 @@
   border-radius: var(--radius-sm);
   padding: var(--space-m);
 }
+
+/* Admin Settings Layout */
+.admin-page-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-l);
+  width: 100%;
+}
+
+.admin-settings-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+  max-width: 800px;
+}
+
+.admin-settings-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-m);
+}
+
+.admin-settings-section-title {
+  font-family: var(--font-display);
+  font-size: var(--fs-h3);
+  color: var(--color-cloud-white);
+  margin-bottom: var(--space-xs);
+}
+
+.admin-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-m);
+}
+
+@media (min-width: 640px) {
+  .admin-grid-2 {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.admin-toggle-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  margin-bottom: var(--space-s);
+}
+
+.admin-field-hint {
+  font-size: var(--fs-label-xs);
+  color: var(--text-secondary);
+  font-family: var(--font-body);
+}
+
+.admin-form-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-m);
+  margin-top: var(--space-m);
+}
+

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import useAsync from '../../common/hooks/useAsync.js';
 import PageHeader from '../../../components/ui/PageHeader.jsx';
 import StatCard from '../../../components/ui/StatCard.jsx';
 import Card from '../../../components/ui/Card.jsx';
@@ -17,39 +17,21 @@ export default function AdminOverviewPage() {
   useDocumentTitle('Admin Overview');
   const { competition } = useCompetition();
 
-  const [stats, setStats] = useState({
-    teamsCount: 0,
-    submissionsCount: 0,
-    judgesCount: 0,
-  });
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const { data: statsData, loading, error, refetch: fetchStats } = useAsync(async () => {
+    const [teamsRes, subsRes, judgesRes] = await Promise.all([
+      getTeams({ page: 1, limit: 1 }),
+      getSubmissions(),
+      getJudges(),
+    ]);
 
-  const fetchStats = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const [teamsRes, subsRes, judgesRes] = await Promise.all([
-        getTeams({ page: 1, limit: 1 }),
-        getSubmissions(),
-        getJudges(),
-      ]);
+    return {
+      teamsCount: teamsRes?.pagination?.total || teamsRes?.teams?.length || 0,
+      submissionsCount: subsRes?.length || 0,
+      judgesCount: judgesRes?.length || 0,
+    };
+  }, true);
 
-      setStats({
-        teamsCount: teamsRes?.pagination?.total || teamsRes?.teams?.length || 0,
-        submissionsCount: subsRes?.length || 0,
-        judgesCount: judgesRes?.length || 0,
-      });
-    } catch (err) {
-      setError(err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchStats();
-  }, []);
+  const stats = statsData || { teamsCount: 0, submissionsCount: 0, judgesCount: 0 };
 
   const regStatus = getRegistrationStatus(competition);
   const subStatus = getSubmissionStatus(competition);

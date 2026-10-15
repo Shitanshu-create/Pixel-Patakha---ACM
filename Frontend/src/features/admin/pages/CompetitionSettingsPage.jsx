@@ -1,27 +1,25 @@
-import React, { useState, useEffect } from 'react';
-import PageHeader from '../../../components/ui/PageHeader';
-import Card from '../../../components/ui/Card';
-import FormField from '../../../components/ui/FormField';
-import Input from '../../../components/ui/Input';
-import Textarea from '../../../components/ui/Textarea';
-import Toggle from '../../../components/ui/Toggle';
-import Button from '../../../components/ui/Button';
-import Spinner from '../../../components/ui/Spinner';
-import Alert from '../../../components/ui/Alert';
-import { useToast } from '../../common/context/ToastContext';
-import { getCompetition } from '../../common/api/competitionApi';
-import { updateCompetition } from '../api/adminApi';
-import { toDateTimeLocalValue, toIsoStringOrNull } from '../utils/dateInput';
-import useDocumentTitle from '../../common/hooks/useDocumentTitle';
+import { useState } from 'react';
+import useAsync from '../../common/hooks/useAsync.js';
+import PageHeader from '../../../components/ui/PageHeader.jsx';
+import Card from '../../../components/ui/Card.jsx';
+import FormField from '../../../components/ui/FormField.jsx';
+import Input from '../../../components/ui/Input.jsx';
+import Textarea from '../../../components/ui/Textarea.jsx';
+import Toggle from '../../../components/ui/Toggle.jsx';
+import Button from '../../../components/ui/Button.jsx';
+import Spinner from '../../../components/ui/Spinner.jsx';
+import Alert from '../../../components/ui/Alert.jsx';
+import { useToast } from '../../common/context/ToastContext.jsx';
+import { getCompetition } from '../../common/api/competitionApi.js';
+import { updateCompetition } from '../api/adminApi.js';
+import { toDateTimeLocalValue, toIsoStringOrNull } from '../utils/dateInput.js';
+import useDocumentTitle from '../../common/hooks/useDocumentTitle.js';
 import '../styles/admin.css';
 
 export default function CompetitionSettingsPage() {
   useDocumentTitle('Competition Settings');
-  const { showSuccess, showError } = useToast();
-  const [loading, setLoading] = useState(true);
+  const toast = useToast();
   const [saving, setSaving] = useState(false);
-  const [error, setError] = useState(null);
-
   const [form, setForm] = useState({
     name: '',
     tagline: '',
@@ -34,36 +32,26 @@ export default function CompetitionSettingsPage() {
     submissionDeadline: '',
     rulesText: '',
   });
-
-  const loadData = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      const data = await getCompetition();
-      if (data) {
-        setForm({
-          name: data.name || '',
-          tagline: data.tagline || '',
-          description: data.description || '',
-          venue: data.venue || '',
-          eventDate: toDateTimeLocalValue(data.eventDate),
-          registrationOpen: !!data.registrationOpen,
-          registrationDeadline: toDateTimeLocalValue(data.registrationDeadline),
-          submissionOpen: !!data.submissionOpen,
-          submissionDeadline: toDateTimeLocalValue(data.submissionDeadline),
-          rulesText: Array.isArray(data.rules) ? data.rules.join('\n') : '',
-        });
-      }
-    } catch (err) {
-      setError(err?.response?.data?.message || err.message || 'Failed to load competition settings');
-    } finally {
-      setLoading(false);
+  const { loading, error: fetchError, refetch: loadData } = useAsync(async () => {
+    const data = await getCompetition();
+    if (data) {
+      setForm({
+        name: data.name || '',
+        tagline: data.tagline || '',
+        description: data.description || '',
+        venue: data.venue || '',
+        eventDate: toDateTimeLocalValue(data.eventDate),
+        registrationOpen: !!data.registrationOpen,
+        registrationDeadline: toDateTimeLocalValue(data.registrationDeadline),
+        submissionOpen: !!data.submissionOpen,
+        submissionDeadline: toDateTimeLocalValue(data.submissionDeadline),
+        rulesText: Array.isArray(data.rules) ? data.rules.join('\n') : '',
+      });
     }
-  };
+    return data;
+  }, true);
 
-  useEffect(() => {
-    loadData();
-  }, []);
+  const error = fetchError ? (fetchError?.response?.data?.message || fetchError.message || 'Failed to load competition settings') : null;
 
   const handleChange = (field, value) => {
     setForm((prev) => ({ ...prev, [field]: value }));
@@ -90,9 +78,9 @@ export default function CompetitionSettingsPage() {
       };
 
       await updateCompetition(payload);
-      showSuccess('Competition settings updated successfully');
+      toast.success('Competition settings updated successfully');
     } catch (err) {
-      showError(err?.response?.data?.message || err.message || 'Failed to update settings');
+      toast.error(err?.response?.data?.message || err.message || 'Failed to update settings');
     } finally {
       setSaving(false);
     }
@@ -110,17 +98,18 @@ export default function CompetitionSettingsPage() {
       />
 
       {error && (
-        <Alert variant="danger" title="Error">
+        <Alert variant="error" title="Error" style={{ marginBottom: 'var(--space-l)' }}>
           {error}
         </Alert>
       )}
 
       <form onSubmit={handleSubmit} className="admin-settings-form">
-        <Card variant="glass" className="admin-settings-card">
+        <Card accent="cyan" className="admin-settings-card">
           <h3 className="admin-settings-section-title">General Information</h3>
           <div className="admin-grid-2">
-            <FormField label="Competition Name" required>
+            <FormField id="comp-name" label="Competition Name" required>
               <Input
+                id="comp-name"
                 value={form.name}
                 onChange={(e) => handleChange('name', e.target.value)}
                 placeholder="Pixel Patakha '26"
@@ -128,8 +117,9 @@ export default function CompetitionSettingsPage() {
               />
             </FormField>
 
-            <FormField label="Tagline">
+            <FormField id="comp-tagline" label="Tagline">
               <Input
+                id="comp-tagline"
                 value={form.tagline}
                 onChange={(e) => handleChange('tagline', e.target.value)}
                 placeholder="Unleash your creative pixel spark"
@@ -137,8 +127,9 @@ export default function CompetitionSettingsPage() {
             </FormField>
           </div>
 
-          <FormField label="Description">
+          <FormField id="comp-desc" label="Description">
             <Textarea
+              id="comp-desc"
               rows={3}
               value={form.description}
               onChange={(e) => handleChange('description', e.target.value)}
@@ -147,16 +138,18 @@ export default function CompetitionSettingsPage() {
           </FormField>
 
           <div className="admin-grid-2">
-            <FormField label="Venue / Platform">
+            <FormField id="comp-venue" label="Venue / Platform">
               <Input
+                id="comp-venue"
                 value={form.venue}
                 onChange={(e) => handleChange('venue', e.target.value)}
                 placeholder="Auditorium / Online Discord"
               />
             </FormField>
 
-            <FormField label="Event Date">
+            <FormField id="comp-eventdate" label="Event Date">
               <Input
+                id="comp-eventdate"
                 type="datetime-local"
                 value={form.eventDate}
                 onChange={(e) => handleChange('eventDate', e.target.value)}
@@ -165,10 +158,11 @@ export default function CompetitionSettingsPage() {
           </div>
         </Card>
 
-        <Card variant="glass" className="admin-settings-card">
+        <Card accent="purple" className="admin-settings-card">
           <h3 className="admin-settings-section-title">Registration Phase</h3>
           <div className="admin-toggle-field">
             <Toggle
+              id="comp-reg-toggle"
               checked={form.registrationOpen}
               onChange={(checked) => handleChange('registrationOpen', checked)}
               label="Registration Window Active"
@@ -180,8 +174,9 @@ export default function CompetitionSettingsPage() {
             </span>
           </div>
 
-          <FormField label="Registration Deadline">
+          <FormField id="comp-reg-deadline" label="Registration Deadline">
             <Input
+              id="comp-reg-deadline"
               type="datetime-local"
               value={form.registrationDeadline}
               onChange={(e) => handleChange('registrationDeadline', e.target.value)}
@@ -189,10 +184,11 @@ export default function CompetitionSettingsPage() {
           </FormField>
         </Card>
 
-        <Card variant="glass" className="admin-settings-card">
+        <Card accent="yellow" className="admin-settings-card">
           <h3 className="admin-settings-section-title">Submission Phase</h3>
           <div className="admin-toggle-field">
             <Toggle
+              id="comp-sub-toggle"
               checked={form.submissionOpen}
               onChange={(checked) => handleChange('submissionOpen', checked)}
               label="Submission Window Active"
@@ -204,8 +200,9 @@ export default function CompetitionSettingsPage() {
             </span>
           </div>
 
-          <FormField label="Submission Deadline">
+          <FormField id="comp-sub-deadline" label="Submission Deadline">
             <Input
+              id="comp-sub-deadline"
               type="datetime-local"
               value={form.submissionDeadline}
               onChange={(e) => handleChange('submissionDeadline', e.target.value)}
@@ -213,13 +210,15 @@ export default function CompetitionSettingsPage() {
           </FormField>
         </Card>
 
-        <Card variant="glass" className="admin-settings-card">
+        <Card accent="pink" className="admin-settings-card">
           <h3 className="admin-settings-section-title">Competition Rules</h3>
           <FormField
+            id="comp-rules"
             label="Rules List (Enter one rule per line)"
             hint="Each line will be displayed as a distinct guideline to participants."
           >
             <Textarea
+              id="comp-rules"
               rows={6}
               value={form.rulesText}
               onChange={(e) => handleChange('rulesText', e.target.value)}
@@ -229,11 +228,11 @@ export default function CompetitionSettingsPage() {
         </Card>
 
         <div className="admin-form-actions">
-          <Button type="button" variant="outline" onClick={loadData} disabled={saving}>
+          <Button type="button" variant="secondary" onClick={loadData} disabled={saving}>
             Reset Changes
           </Button>
-          <Button type="submit" variant="primary" disabled={saving}>
-            {saving ? 'Saving Settings...' : 'Save Settings'}
+          <Button type="submit" variant="primary" loading={saving} disabled={saving}>
+            Save Settings
           </Button>
         </div>
       </form>

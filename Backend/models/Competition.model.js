@@ -2,6 +2,12 @@ import mongoose from 'mongoose';
 
 const competitionSchema = new mongoose.Schema(
   {
+    key: {
+      type: String,
+      default: 'main',
+      unique: true,
+      index: true,
+    },
     name: {
       type: String,
       default: 'PIXEL PATAKHA',
@@ -19,13 +25,13 @@ const competitionSchema = new mongoose.Schema(
     },
     venue: {
       type: String,
-      default: 'Main Auditorium / Online',
+      default: 'B404, Main Auditorium / Online',
       trim: true,
     },
     rules: {
       type: [String],
       default: [
-        'Each team must consist of 1-4 members.',
+        'Each team must consist of 1-3 members.',
         'Submissions must be original designs in PNG, JPG, WEBP, or PDF format.',
         'Only one submission per team is permitted.',
         'Deadlines are strictly enforced.',
