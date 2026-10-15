@@ -14,7 +14,7 @@ for (const envVar of requiredEnv) {
   }
 }
 
-export const port = process.env.PORT || 5000;
+export const port = process.env.PORT || 3000;
 export const nodeEnv = process.env.NODE_ENV || 'development';
 export const clientUrl = process.env.CLIENT_URL || 'http://localhost:5173';
 export const mongoUri = process.env.MONGO_URI;
