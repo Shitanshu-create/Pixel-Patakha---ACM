@@ -1,0 +1,48 @@
+.card {
+  background-color: var(--bg-panel);
+  border: var(--border-width) solid var(--card-border, var(--border-subtle));
+  border-radius: var(--radius-sm);
+  padding: var(--space-l);
+  position: relative;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.card--interactive:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-card-hover);
+  border-color: var(--color-electric-cyan);
+}
+
+/* Tone variants */
+.card--cyan {
+  --card-border: var(--color-electric-cyan);
+}
+
+.card--purple {
+  --card-border: var(--color-voxel-purple);
+}
+
+.card--yellow {
+  --card-border: var(--color-arcade-yellow);
+}
+
+.card--pink {
+  --card-border: var(--color-pixel-pink);
+}
+
+.card--muted {
+  --card-border: var(--color-panel-border);
+}
+
+/* Pixel corners */
+.card__corner {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background-color: var(--card-corner-color, var(--color-electric-cyan));
+}
+
+.card__corner--tl { top: -2px; left: -2px; }
+.card__corner--tr { top: -2px; right: -2px; }
+.card__corner--bl { bottom: -2px; left: -2px; }
+.card__corner--br { bottom: -2px; right: -2px; }

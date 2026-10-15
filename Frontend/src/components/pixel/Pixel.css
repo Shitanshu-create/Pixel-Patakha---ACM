@@ -1,0 +1,29 @@
+.pixel-box {
+  background-color: var(--bg-panel);
+  border: var(--border-width) solid var(--border-strong);
+  position: relative;
+}
+
+.pixel-corner-tl,
+.pixel-corner-tr,
+.pixel-corner-bl,
+.pixel-corner-br {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background-color: var(--color-arcade-yellow);
+}
+
+.pixel-corner-tl { top: -2px; left: -2px; }
+.pixel-corner-tr { top: -2px; right: -2px; }
+.pixel-corner-bl { bottom: -2px; left: -2px; }
+.pixel-corner-br { bottom: -2px; right: -2px; }
+
+.float-slow {
+  animation: float 4s ease-in-out infinite;
+}
+
+.float-delayed {
+  animation: float 4.5s ease-in-out infinite;
+  animation-delay: 1.5s;
+}

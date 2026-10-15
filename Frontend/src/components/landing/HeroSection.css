@@ -1,0 +1,248 @@
+.hero-section {
+  position: relative;
+  overflow: hidden;
+  padding: var(--space-2xl) 0 var(--space-3xl);
+  min-height: calc(100vh - 68px);
+  display: flex;
+  align-items: center;
+}
+
+/* Diagonal stepped pixel band */
+.hero-band {
+  position: absolute;
+  top: 15%;
+  right: -5%;
+  width: 65%;
+  height: 380px;
+  background: var(--gradient-purple-blue);
+  opacity: 0.35;
+  transform: rotate(-10deg);
+  clip-path: polygon(0 0, 100% 0, 95% 100%, 5% 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+@media (max-width: 767px) {
+  .hero-band {
+    width: 100%;
+    right: 0;
+    top: 30%;
+    height: 200px;
+    transform: none;
+    clip-path: none;
+    opacity: 0.2;
+  }
+}
+
+.hero-grid {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-2xl);
+  align-items: center;
+}
+
+@media (min-width: 1024px) {
+  .hero-grid {
+    grid-template-columns: 1.25fr 0.85fr;
+  }
+}
+
+.hero-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-l);
+}
+
+.hero-badge-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-s);
+  flex-wrap: wrap;
+}
+
+.hero-title {
+  font-family: var(--font-display);
+  font-size: var(--fs-hero);
+  color: var(--color-cloud-white);
+  line-height: 1.05;
+  text-shadow: var(--title-shadow);
+  letter-spacing: 2px;
+}
+
+@media (min-width: 1024px) {
+  .hero-title {
+    transform: rotate(-1.5deg);
+  }
+}
+
+.hero-subtitle {
+  font-family: var(--font-label);
+  font-size: var(--fs-body);
+  color: var(--color-arcade-yellow);
+  letter-spacing: 1px;
+}
+
+.hero-description {
+  font-family: var(--font-body);
+  font-size: 1.1rem;
+  color: var(--text-primary);
+  max-width: 580px;
+  line-height: 1.6;
+}
+
+.hero-cta-group {
+  display: flex;
+  align-items: center;
+  gap: var(--space-m);
+  flex-wrap: wrap;
+}
+
+/* HUD chips */
+.hero-hud-chips {
+  display: flex;
+  gap: var(--space-s);
+  flex-wrap: wrap;
+  margin-top: var(--space-s);
+}
+
+.hud-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: 6px var(--space-m);
+  background-color: color-mix(in srgb, var(--color-deep-navy) 85%, transparent);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-label);
+  font-size: var(--fs-label);
+  color: var(--color-cloud-white);
+}
+
+.hud-chip--highlight {
+  border-color: var(--color-arcade-yellow);
+  color: var(--color-arcade-yellow);
+}
+
+/* Right Art / Quest card */
+.hero-art-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.floating-sprites-container {
+  position: absolute;
+  inset: -30px;
+  pointer-events: none;
+}
+
+@media (max-width: 767px) {
+  .floating-sprites-container {
+    display: none;
+  }
+}
+
+.sprite-robot {
+  position: absolute;
+  top: 0;
+  left: -20px;
+  animation: float 4s ease-in-out infinite;
+}
+
+.sprite-hero {
+  position: absolute;
+  top: -20px;
+  right: 10px;
+  animation: float 4.5s ease-in-out infinite 1s;
+}
+
+.sprite-invader {
+  position: absolute;
+  bottom: -10px;
+  left: 20px;
+  animation: float 3.5s ease-in-out infinite 0.5s;
+}
+
+.sprite-coin {
+  position: absolute;
+  bottom: 20px;
+  right: -10px;
+  animation: float 3s ease-in-out infinite 1.5s;
+}
+
+.quest-card {
+  width: 100%;
+  max-width: 440px;
+  background-color: var(--color-deep-navy);
+  border: 2px solid var(--color-electric-cyan);
+  border-radius: var(--radius-sm);
+  padding: var(--space-l);
+  box-shadow: 0 0 20px var(--color-cyan-glow);
+  position: relative;
+  z-index: 5;
+}
+
+.quest-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border-subtle);
+  padding-bottom: var(--space-s);
+  margin-bottom: var(--space-m);
+}
+
+.quest-card__title {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  color: var(--color-cloud-white);
+}
+
+.quest-card__rows {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-s);
+  margin-bottom: var(--space-m);
+}
+
+.quest-card__row {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-body);
+  font-size: var(--fs-small);
+  padding: 4px 0;
+  border-bottom: 1px dashed color-mix(in srgb, var(--border-subtle) 40%, transparent);
+}
+
+.quest-card__row-label {
+  color: var(--text-secondary);
+}
+
+.quest-card__row-val {
+  color: var(--color-cloud-white);
+  font-weight: 700;
+}
+
+.quest-card__status-banner {
+  padding: var(--space-s) var(--space-m);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-label);
+  font-size: var(--fs-label-xs);
+  text-align: center;
+  line-height: 1.4;
+}
+
+.quest-card__status-banner--open {
+  background-color: color-mix(in srgb, var(--color-success-green) 15%, transparent);
+  border: 1px solid var(--color-success-green);
+  color: var(--color-success-green);
+}
+
+.quest-card__status-banner--closed {
+  background-color: color-mix(in srgb, var(--color-error-red) 15%, transparent);
+  border: 1px solid var(--color-error-red);
+  color: var(--color-error-red);
+}

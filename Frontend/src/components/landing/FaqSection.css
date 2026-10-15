@@ -1,0 +1,10 @@
+.faq-section {
+  padding: var(--space-3xl) 0;
+  position: relative;
+  z-index: 5;
+}
+
+.faq-container {
+  max-width: 820px;
+  margin: 0 auto;
+}

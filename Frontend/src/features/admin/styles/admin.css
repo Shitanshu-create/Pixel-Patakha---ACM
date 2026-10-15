@@ -1,0 +1,50 @@
+.admin-stats-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-m);
+  margin-bottom: var(--space-xl);
+}
+
+@media (min-width: 640px) {
+  .admin-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .admin-stats-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.search-filter-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-m);
+  margin-bottom: var(--space-l);
+  flex-wrap: wrap;
+}
+
+.search-filter-bar__input {
+  max-width: 360px;
+  width: 100%;
+}
+
+.admin-form-card {
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.reviews-summary-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-m);
+}
+
+.review-item-card {
+  background-color: var(--color-deep-navy);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: var(--space-m);
+}

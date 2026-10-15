@@ -1,0 +1,93 @@
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-xl);
+}
+
+@media (min-width: 1024px) {
+  .dashboard-grid {
+    grid-template-columns: 1.8fr 1.2fr;
+  }
+}
+
+.status-cards-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-m);
+  margin-bottom: var(--space-xl);
+}
+
+@media (min-width: 640px) {
+  .status-cards-row {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.submission-files-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: var(--space-m);
+  margin-top: var(--space-m);
+}
+
+.submission-file-card {
+  background-color: color-mix(in srgb, var(--color-cosmic-black) 50%, var(--color-deep-navy));
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: var(--space-s);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.submission-file-card__thumb {
+  width: 100%;
+  height: 130px;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  background-color: var(--color-cosmic-black);
+}
+
+.submission-file-card__pdf {
+  height: 130px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xs);
+  background-color: var(--color-cosmic-black);
+  border-radius: var(--radius-sm);
+  color: var(--color-arcade-yellow);
+  font-family: var(--font-label);
+  font-size: var(--fs-label);
+}
+
+.announcements-feed {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-m);
+}
+
+.announcement-card {
+  padding: var(--space-m) var(--space-l);
+  border-left: 3px solid var(--color-electric-cyan);
+}
+
+.announcement-card__time {
+  font-size: var(--fs-label-xs);
+  color: var(--text-secondary);
+  font-family: var(--font-label);
+}
+
+.announcement-card__title {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  color: var(--color-cloud-white);
+  margin: var(--space-xs) 0;
+}
+
+.announcement-card__msg {
+  font-size: var(--fs-small);
+  color: var(--text-primary);
+  line-height: 1.5;
+}

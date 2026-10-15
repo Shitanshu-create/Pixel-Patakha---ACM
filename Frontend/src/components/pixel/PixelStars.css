@@ -1,0 +1,23 @@
+.pixel-stars {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.pixel-star {
+  position: absolute;
+  width: var(--star-size, 3px);
+  height: var(--star-size, 3px);
+  background-color: var(--star-color, var(--color-cloud-white));
+  opacity: var(--star-opacity, 0.6);
+  animation: twinkle var(--star-duration, 3s) infinite ease-in-out;
+  animation-delay: var(--star-delay, 0s);
+}
+
+@media (max-width: 767px) {
+  .pixel-star:nth-child(n+16) {
+    display: none;
+  }
+}

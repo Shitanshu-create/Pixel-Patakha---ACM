@@ -1,0 +1,90 @@
+.data-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-deep-navy);
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-family: var(--font-body);
+  font-size: var(--fs-small);
+}
+
+.data-table th {
+  padding: var(--space-m);
+  background-color: color-mix(in srgb, var(--color-cosmic-black) 50%, var(--color-deep-navy));
+  font-family: var(--font-label);
+  font-size: var(--fs-label-xs);
+  text-transform: uppercase;
+  color: var(--color-electric-cyan);
+  border-bottom: 2px solid var(--border-subtle);
+  letter-spacing: 0.5px;
+}
+
+.data-table td {
+  padding: var(--space-m);
+  border-bottom: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  vertical-align: middle;
+}
+
+.data-table tr:last-child td {
+  border-bottom: none;
+}
+
+.data-table tr:hover td {
+  background-color: color-mix(in srgb, var(--color-electric-cyan) 5%, transparent);
+}
+
+/* Mobile stacked cards (< 768px) */
+@media (max-width: 767px) {
+  .data-table-wrapper {
+    background: transparent;
+    border: none;
+  }
+
+  .data-table,
+  .data-table tbody,
+  .data-table tr,
+  .data-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .data-table thead {
+    display: none;
+  }
+
+  .data-table tr {
+    background-color: var(--color-deep-navy);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    margin-bottom: var(--space-m);
+    padding: var(--space-s);
+  }
+
+  .data-table td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-s) var(--space-m);
+    border-bottom: 1px dashed color-mix(in srgb, var(--border-subtle) 50%, transparent);
+  }
+
+  .data-table td:last-child {
+    border-bottom: none;
+  }
+
+  .data-table td::before {
+    content: attr(data-label);
+    font-family: var(--font-label);
+    font-size: var(--fs-label-xs);
+    color: var(--color-electric-cyan);
+    text-transform: uppercase;
+    margin-right: var(--space-m);
+  }
+}

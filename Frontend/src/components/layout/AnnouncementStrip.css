@@ -1,0 +1,13 @@
+.announcement-strip {
+  width: 100%;
+  background-color: var(--color-deep-navy);
+  border-bottom: 1px solid var(--border-subtle);
+  color: var(--color-arcade-yellow);
+  font-family: var(--font-label);
+  font-size: var(--fs-label-xs);
+  text-align: center;
+  padding: 6px var(--space-m);
+  letter-spacing: 1px;
+  position: relative;
+  z-index: 101;
+}

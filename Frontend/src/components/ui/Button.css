@@ -1,0 +1,103 @@
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-s);
+  min-height: var(--tap-target);
+  padding: var(--space-s) var(--space-l);
+  font-family: var(--font-label);
+  font-size: var(--fs-label);
+  text-transform: uppercase;
+  text-decoration: none;
+  letter-spacing: 0.5px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast), background-color var(--transition-fast);
+  user-select: none;
+  white-space: nowrap;
+}
+
+.btn:active:not(:disabled) {
+  transform: translate(2px, 2px);
+  box-shadow: none !important;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+/* Primary */
+.btn--primary {
+  background-color: var(--color-arcade-yellow);
+  color: var(--color-cosmic-black);
+  border: 2px solid var(--color-arcade-yellow);
+  box-shadow: var(--shadow-primary);
+}
+
+.btn--primary:hover:not(:disabled) {
+  background-color: #ffeb60;
+  transform: translateY(-2px);
+  box-shadow: 4px 6px 0 var(--color-voxel-purple);
+  color: var(--color-cosmic-black);
+}
+
+/* Secondary */
+.btn--secondary {
+  background-color: var(--color-deep-navy);
+  color: var(--color-electric-cyan);
+  border: 2px solid var(--color-electric-cyan);
+  box-shadow: var(--shadow-secondary);
+}
+
+.btn--secondary:hover:not(:disabled) {
+  background-color: color-mix(in srgb, var(--color-electric-cyan) 15%, var(--color-deep-navy));
+  transform: translateY(-2px);
+  color: var(--color-cloud-white);
+}
+
+/* Danger */
+.btn--danger {
+  background-color: var(--color-deep-navy);
+  color: var(--color-pixel-pink);
+  border: 2px solid var(--color-pixel-pink);
+  box-shadow: var(--shadow-danger);
+}
+
+.btn--danger:hover:not(:disabled) {
+  background-color: color-mix(in srgb, var(--color-pixel-pink) 20%, var(--color-deep-navy));
+  transform: translateY(-2px);
+  color: var(--color-cloud-white);
+}
+
+/* Ghost */
+.btn--ghost {
+  background-color: transparent;
+  color: var(--text-secondary);
+  border: 2px solid transparent;
+}
+
+.btn--ghost:hover:not(:disabled) {
+  color: var(--color-electric-cyan);
+  background-color: color-mix(in srgb, var(--color-electric-cyan) 10%, transparent);
+}
+
+/* Sizes */
+.btn--sm {
+  min-height: 36px;
+  padding: var(--space-xs) var(--space-m);
+  font-size: var(--fs-label-xs);
+}
+
+.btn--lg {
+  min-height: 52px;
+  padding: var(--space-m) var(--space-xl);
+  font-size: var(--fs-body);
+  font-family: var(--font-display);
+}
+
+.btn--full {
+  width: 100%;
+}

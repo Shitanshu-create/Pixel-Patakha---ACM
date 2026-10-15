@@ -1,0 +1,72 @@
+.form-control {
+  width: 100%;
+  min-height: var(--tap-target);
+  padding: var(--space-s) var(--space-m);
+  background-color: var(--color-deep-navy);
+  color: var(--color-cloud-white);
+  border: var(--border-width) solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.form-control::placeholder {
+  color: var(--text-secondary);
+  opacity: 0.7;
+}
+
+.form-control:focus {
+  border-color: var(--color-electric-cyan);
+  box-shadow: 0 0 0 2px var(--color-cyan-glow);
+  outline: none;
+}
+
+.form-control[aria-invalid="true"],
+.form-control--error {
+  border-color: var(--color-error-red) !important;
+}
+
+textarea.form-control {
+  min-height: 100px;
+  resize: vertical;
+}
+
+/* Switch / Toggle */
+.toggle-wrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-m);
+  cursor: pointer;
+  user-select: none;
+}
+
+.toggle-switch {
+  position: relative;
+  width: 48px;
+  height: 26px;
+  background-color: var(--color-panel-border);
+  border: 2px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  transition: background-color var(--transition-fast);
+}
+
+.toggle-switch--active {
+  background-color: var(--color-success-green);
+  border-color: var(--color-success-green);
+}
+
+.toggle-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 18px;
+  height: 18px;
+  background-color: var(--color-cloud-white);
+  transition: transform var(--transition-fast);
+}
+
+.toggle-switch--active .toggle-thumb {
+  transform: translateX(22px);
+  background-color: var(--color-cosmic-black);
+}
