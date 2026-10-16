@@ -23,9 +23,9 @@ export default function Footer() {
             </p>
 
             <div className="footer__logos">
-              <img src="/bvcoe-logo.png" alt="BVCOE Logo" className="footer__logo-img" />
-              <img src="/DAS-logo.png" alt="DAS Logo" className="footer__logo-img" />
-              <img src="/ACM-logo.png" alt="ACM BVP Logo" className="footer__logo-img" />
+              <img src="/bvcoe-logo.png" alt="BVCOE Logo" className="footer__logo-img" loading="lazy" decoding="async" />
+              <img src="/DAS-logo.png" alt="DAS Logo" className="footer__logo-img" loading="lazy" decoding="async" />
+              <img src="/ACM-logo.png" alt="ACM BVP Logo" className="footer__logo-img" loading="lazy" decoding="async" />
             </div>
           </div>
 

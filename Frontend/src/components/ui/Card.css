@@ -1,10 +1,11 @@
 .card {
-  background-color: var(--bg-panel);
+  background: linear-gradient(145deg, rgba(12, 38, 82, .96), rgba(5, 17, 41, .96));
   border: var(--border-width) solid var(--card-border, var(--border-subtle));
   border-radius: var(--radius-sm);
   padding: var(--space-l);
   position: relative;
-  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+  box-shadow: 4px 4px 0 rgba(3, 7, 17, .45);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-fast);
 }
 
 .card--interactive:hover {

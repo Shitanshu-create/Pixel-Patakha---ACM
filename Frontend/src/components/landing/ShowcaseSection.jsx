@@ -8,7 +8,7 @@ import './ShowcaseSection.css';
 
 export default function ShowcaseSection() {
   return (
-    <section id="showcase" className="showcase-section" aria-label="Participant Showcase">
+    <section id="showcase" className="showcase-section landing-reveal-section" aria-label="Participant Showcase">
       <div className="container">
         <div className="section-header">
           <div className="section-header__tag">★ HALL OF CREATION ★</div>
@@ -20,7 +20,7 @@ export default function ShowcaseSection() {
 
         <div className="showcase-grid">
           {EVENT_INFO.showcase.map((item) => (
-            <Card key={item.id} accent="purple" className="showcase-card">
+            <Card key={item.id} accent="purple" className="showcase-card" data-reveal-item>
               <div className="showcase-card__thumb">
                 <PixelSprite name="diamond" size={32} />
                 <span style={{ fontFamily: 'var(--font-label)', fontSize: '9px', color: 'var(--color-arcade-yellow)' }}>
@@ -43,7 +43,7 @@ export default function ShowcaseSection() {
           ))}
         </div>
 
-        <div className="showcase-cta-banner">
+        <div className="showcase-cta-banner" data-reveal-item>
           <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.45rem', color: 'var(--color-cloud-white)' }}>
             Ready to claim your place in the Hall of Fame?
           </h3>

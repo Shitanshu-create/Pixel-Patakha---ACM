@@ -3,13 +3,16 @@
   min-height: 100dvh;
   display: flex;
   background-color: var(--bg-page);
+  background-image: linear-gradient(rgba(7, 21, 43, .86), rgba(3, 7, 17, .94)), url('/bg.png');
+  background-size: cover;
+  background-attachment: fixed;
   position: relative;
 }
 
 /* Sidebar */
 .dashboard-sidebar {
   width: var(--sidebar-width);
-  background-color: var(--color-deep-navy);
+  background: linear-gradient(180deg, #0a2050, #061126 78%);
   border-right: 2px solid var(--border-subtle);
   display: flex;
   flex-direction: column;
@@ -62,6 +65,7 @@
   font-size: var(--fs-body);
   text-decoration: none;
   border: 1px solid transparent;
+  min-height: 44px;
   transition: all var(--transition-fast);
 }
 
@@ -101,7 +105,7 @@
 
 .dashboard-topbar {
   height: 68px;
-  background-color: color-mix(in srgb, var(--color-deep-navy) 90%, transparent);
+  background-color: color-mix(in srgb, var(--color-deep-navy) 94%, transparent);
   backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--border-subtle);
   display: flex;
@@ -154,6 +158,9 @@
 .dashboard-content {
   flex: 1;
   padding: var(--space-l);
+  max-width: 1600px;
+  width: 100%;
+  margin: 0 auto;
 }
 
 @media (min-width: 768px) {

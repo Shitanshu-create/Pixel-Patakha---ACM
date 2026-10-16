@@ -9,6 +9,7 @@ import AuthLayout from './components/layout/AuthLayout';
 import DashboardLayout from './components/layout/DashboardLayout';
 import Spinner from './components/ui/Spinner';
 import ROUTES from './config/routes';
+import SmoothScroll from './components/layout/SmoothScroll';
 
 // Landing & 404
 const LandingPage = lazy(() => import('./pages/LandingPage'));
@@ -45,6 +46,7 @@ function AppFallback() {
 export default function App() {
   return (
     <BrowserRouter>
+      <SmoothScroll>
       <ToastProvider>
         <AuthProvider>
           <Suspense fallback={<AppFallback />}>
@@ -100,6 +102,7 @@ export default function App() {
           </Suspense>
         </AuthProvider>
       </ToastProvider>
+      </SmoothScroll>
     </BrowserRouter>
   );
 }

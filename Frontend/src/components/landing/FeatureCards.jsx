@@ -6,7 +6,7 @@ import './FeatureCards.css';
 
 export default function FeatureCards() {
   return (
-    <section id="about" className="feature-section" aria-label="About the Quest">
+    <section id="about" className="feature-section landing-reveal-section" aria-label="About the Quest">
       <div className="container">
         <div className="section-header">
           <div className="section-header__tag">★ MISSION STAGES ★</div>
@@ -23,6 +23,7 @@ export default function FeatureCards() {
               accent={feat.tone}
               interactive
               className="feature-card"
+              data-reveal-item
             >
               <div className="feature-card__top">
                 <Badge tone={feat.tone}>STAGE {feat.step}</Badge>

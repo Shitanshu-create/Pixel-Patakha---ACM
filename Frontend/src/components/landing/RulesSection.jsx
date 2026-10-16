@@ -5,7 +5,7 @@ import './RulesSection.css';
 
 export default function RulesSection() {
   return (
-    <section id="rules" className="rules-section" aria-label="Rules and Policies">
+    <section id="rules" className="rules-section landing-reveal-section" aria-label="Rules and Policies">
       <div className="container">
         <div className="section-header">
           <div className="section-header__tag">★ CODE OF HONOR ★</div>
@@ -17,7 +17,7 @@ export default function RulesSection() {
 
         <div className="rules-grid">
           {/* Rules Checklist (Cyan bordered) */}
-          <Card accent="cyan" className="rules-card">
+          <Card accent="cyan" className="rules-card" data-reveal-item>
             <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-s)', marginBottom: 'var(--space-l)' }}>
               <Badge tone="cyan">GENERAL GUIDELINES</Badge>
               <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.25rem', color: 'var(--color-cloud-white)' }}>
@@ -36,7 +36,7 @@ export default function RulesSection() {
           </Card>
 
           {/* AI Policy & Warning (Pink bordered) */}
-          <Card accent="pink" className="ai-policy-card">
+          <Card accent="pink" className="ai-policy-card" data-reveal-item>
             <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-s)', marginBottom: 'var(--space-s)' }}>
               <Badge tone="pink" icon="⚠">STRICT ENFORCEMENT</Badge>
             </div>

@@ -5,6 +5,15 @@
   margin-bottom: var(--space-xl);
 }
 
+.admin-submission-detail-page .card,
+.admin-page-container .card {
+  box-shadow: 6px 6px 0 rgba(3, 7, 17, .45);
+}
+
+.review-item-card {
+  border-left: 3px solid var(--color-arcade-yellow);
+}
+
 @media (min-width: 640px) {
   .admin-stats-grid {
     grid-template-columns: repeat(2, 1fr);

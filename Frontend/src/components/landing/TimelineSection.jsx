@@ -17,7 +17,7 @@ export default function TimelineSection() {
   };
 
   return (
-    <section id="timeline" className="timeline-section" aria-label="Competition Timeline">
+    <section id="timeline" className="timeline-section landing-reveal-section" aria-label="Competition Timeline">
       <div className="container">
         <div className="section-header">
           <div className="section-header__tag">★ RUNTIME SCHEDULE ★</div>
@@ -29,7 +29,7 @@ export default function TimelineSection() {
 
         <div className="timeline-track">
           {EVENT_INFO.timeline.map((item, idx) => (
-            <div key={idx} className="timeline-node">
+            <div key={idx} className="timeline-node" data-reveal-item>
               <div className="timeline-node__marker">
                 <PixelSprite name={getSpriteName(item.icon)} size={22} />
                 <span className="timeline-node__time">{item.time}</span>

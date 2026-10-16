@@ -11,7 +11,7 @@
   border-collapse: collapse;
   text-align: left;
   font-family: var(--font-body);
-  font-size: var(--fs-small);
+  font-size: 0.875rem;
 }
 
 .data-table th {
@@ -28,7 +28,7 @@
 .data-table td {
   padding: var(--space-m);
   border-bottom: 1px solid var(--border-subtle);
-  color: var(--text-primary);
+  color: var(--color-cloud-white);
   vertical-align: middle;
 }
 

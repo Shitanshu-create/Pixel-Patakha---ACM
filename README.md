@@ -1,5 +1,7 @@
 # Pixel Patakha '26 – ACM Platform
 
+PIXEL PATAKHA is a college-level UI/UX design competition at Bharati Vidyapeeths College Of Engineering, in is Tech Fest named BVEST organised by the collaboration of ACM x DAS where participants can register their teams, submit their designs, and have them evaluated by the judges.
+
 Full-stack competition management platform for **Pixel Patakha '26**, featuring a retro 8-bit / voxel cyber-arcade design, live team registrations, multi-file artifact submission, judge scoring workflows, real-time announcements, and administrative controls.
 
 ---

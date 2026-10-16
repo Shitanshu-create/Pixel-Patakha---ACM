@@ -62,6 +62,8 @@ export default function SubmissionView({ submission }) {
                     src={file.url}
                     alt={file.originalName}
                     className="submission-file-card__thumb"
+                    loading="lazy"
+                    decoding="async"
                   />
                 )}
 

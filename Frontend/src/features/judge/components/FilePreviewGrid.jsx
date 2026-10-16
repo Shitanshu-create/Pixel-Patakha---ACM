@@ -1,4 +1,5 @@
 import { formatFileSize } from '../../common/utils/formatFileSize.js';
+import '../styles/judge.css';
 
 export default function FilePreviewGrid({ files = [] }) {
   if (!files || files.length === 0) {
@@ -29,7 +30,7 @@ export default function FilePreviewGrid({ files = [] }) {
             {isPdf ? (
               <div
                 style={{
-                  height: '240px',
+                  height: '180px',
                   backgroundColor: 'var(--color-cosmic-black)',
                   display: 'flex',
                   flexDirection: 'column',
@@ -62,6 +63,8 @@ export default function FilePreviewGrid({ files = [] }) {
                 src={file.url}
                 alt={file.originalName}
                 className="file-preview-card__img"
+                loading="lazy"
+                decoding="async"
               />
             )}
           </div>

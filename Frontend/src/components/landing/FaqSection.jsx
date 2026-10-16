@@ -4,7 +4,7 @@ import './FaqSection.css';
 
 export default function FaqSection() {
   return (
-    <section id="faq" className="faq-section" aria-label="Frequently Asked Questions">
+    <section id="faq" className="faq-section landing-reveal-section" aria-label="Frequently Asked Questions">
       <div className="container">
         <div className="section-header">
           <div className="section-header__tag">★ EVENT INTEL ★</div>
@@ -14,7 +14,7 @@ export default function FaqSection() {
           </p>
         </div>
 
-        <div className="faq-container">
+        <div className="faq-container" data-reveal-item>
           <Accordion items={EVENT_INFO.faq} />
         </div>
       </div>
