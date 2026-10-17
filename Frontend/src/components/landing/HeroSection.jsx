@@ -86,7 +86,7 @@ export default function HeroSection() {
             </span>
 
             <span className="hud-chip">
-              <span>VENUE: {EVENT_INFO.venue}</span>
+              <span>{EVENT_INFO.venue}</span>
             </span>
           </div>
         </div>
