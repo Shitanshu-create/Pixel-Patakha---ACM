@@ -15,11 +15,22 @@ export const getTeamProfile = async (teamId) => {
     throw new ApiError(404, 'Team not found');
   }
 
-  const submission = await Submission.findOne({ team: teamId });
+  let cleanSubmission = null;
+  if (submission) {
+    const subObj = submission.toObject ? submission.toObject() : { ...submission };
+    delete subObj.aiDetectionSummary;
+    if (Array.isArray(subObj.files)) {
+      subObj.files = subObj.files.map((file) => {
+        const { aiDetection, ...rest } = file;
+        return rest;
+      });
+    }
+    cleanSubmission = subObj;
+  }
 
   return {
     team,
-    submission: submission || null,
+    submission: cleanSubmission,
   };
 };
 

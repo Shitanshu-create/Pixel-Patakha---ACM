@@ -1,5 +1,31 @@
 import mongoose from 'mongoose';
 
+const aiDetectionFileSchema = new mongoose.Schema(
+  {
+    provider: { type: String, default: 'sightengine' },
+    status: {
+      type: String,
+      enum: ['pending', 'processing', 'done', 'skipped', 'failed'],
+      default: 'pending',
+    },
+    score: { type: Number, min: 0, max: 1 },
+    percent: { type: Number, min: 0, max: 100 },
+    level: { type: String, enum: ['low', 'review', 'high'] },
+    topGenerator: {
+      name: String,
+      percent: Number,
+    },
+    operations: Number,
+    requestId: String,
+    attempts: { type: Number, default: 0 },
+    nextAttemptAt: Date,
+    startedAt: Date,
+    checkedAt: Date,
+    reason: String,
+  },
+  { _id: false }
+);
+
 const submissionFileSchema = new mongoose.Schema(
   {
     originalName: {
@@ -22,6 +48,27 @@ const submissionFileSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    aiDetection: {
+      type: aiDetectionFileSchema,
+      default: () => ({ status: 'pending' }),
+    },
+  },
+  { _id: false }
+);
+
+const aiDetectionSummarySchema = new mongoose.Schema(
+  {
+    status: {
+      type: String,
+      enum: ['pending', 'partial', 'done', 'skipped', 'failed'],
+      default: 'pending',
+    },
+    maxPercent: Number,
+    avgPercent: Number,
+    level: { type: String, enum: ['low', 'review', 'high'] },
+    scannedFiles: Number,
+    totalFiles: Number,
+    checkedAt: Date,
   },
   { _id: false }
 );
@@ -52,7 +99,11 @@ const submissionSchema = new mongoose.Schema(
     files: {
       type: [submissionFileSchema],
       required: true,
-      validate: [val => val.length > 0, 'At least one file is required'],
+      validate: [(val) => val.length > 0, 'At least one file is required'],
+    },
+    aiDetectionSummary: {
+      type: aiDetectionSummarySchema,
+      default: () => ({ status: 'pending' }),
     },
     submittedAt: {
       type: Date,
@@ -63,5 +114,7 @@ const submissionSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+
+submissionSchema.index({ 'files.aiDetection.status': 1, submittedAt: 1 });
 
 export default mongoose.model('Submission', submissionSchema);

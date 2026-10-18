@@ -136,6 +136,22 @@ export default function SubmissionForm({ onSuccess }) {
             />
           </FormField>
 
+          <div
+            style={{
+              padding: 'var(--space-s) var(--space-m)',
+              background: 'rgba(0, 217, 255, 0.05)',
+              border: '1px solid rgba(0, 217, 255, 0.2)',
+              borderRadius: 'var(--radius-sm)',
+              fontSize: 'var(--fs-label-xs)',
+              color: 'var(--text-secondary)',
+              lineHeight: 1.5,
+              marginTop: 'var(--space-m)',
+              fontFamily: 'var(--font-label)',
+            }}
+          >
+            🛡 <strong>Integrity & Authenticity:</strong> Submissions may undergo automated image verification to assist judges in evaluating original creative effort. Please ensure all external assets and references are properly cited.
+          </div>
+
           <div style={{ marginTop: 'var(--space-xl)' }}>
             <Button
               type="submit"

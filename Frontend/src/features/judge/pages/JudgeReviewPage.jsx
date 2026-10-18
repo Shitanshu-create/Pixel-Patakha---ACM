@@ -7,6 +7,8 @@ import Button from '../../../components/ui/Button.jsx';
 import Spinner from '../../../components/ui/Spinner.jsx';
 import ErrorState from '../../../components/ui/ErrorState.jsx';
 import FilePreviewGrid from '../components/FilePreviewGrid.jsx';
+import AiScoreMeter from '../../../components/ui/AiScoreMeter.jsx';
+import AiScoreBadge from '../../../components/ui/AiScoreBadge.jsx';
 import ReviewForm from '../components/ReviewForm.jsx';
 import { getSubmissionById, getReviews } from '../api/judgeApi.js';
 import { formatDate } from '../../common/utils/formatDate.js';
@@ -50,6 +52,8 @@ export default function JudgeReviewPage() {
     return <ErrorState title="Failed to load submission" onRetry={fetchData} />;
   }
 
+  const aiSummary = submission.aiDetectionSummary;
+
   return (
     <div className="judge-review-page">
       <div style={{ marginBottom: 'var(--space-m)' }}>
@@ -70,6 +74,41 @@ export default function JudgeReviewPage() {
       <div className="judge-review-split">
         {/* Left: Project Details & File Previews */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-l)' }}>
+          {/* AI Likelihood Assessment Card */}
+          {aiSummary && (
+            <Card accent={aiSummary.level === 'high' ? 'pink' : aiSummary.level === 'medium' ? 'yellow' : 'cyan'}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--space-s)', flexWrap: 'wrap', gap: 'var(--space-xs)' }}>
+                <h4 style={{ margin: 0, fontFamily: 'var(--font-display)', fontSize: 'var(--fs-card-title)' }}>
+                  AI Generation Likelihood
+                </h4>
+                <AiScoreBadge
+                  status={aiSummary.status}
+                  likelihood={aiSummary.overallLikelihood}
+                  level={aiSummary.level}
+                  size="md"
+                />
+              </div>
+
+              <AiScoreMeter
+                likelihood={aiSummary.overallLikelihood}
+                level={aiSummary.level}
+                size="md"
+              />
+
+              <p
+                style={{
+                  margin: 'var(--space-s) 0 0 0',
+                  fontSize: 'var(--fs-label-xs)',
+                  color: 'var(--text-secondary)',
+                  lineHeight: 1.5,
+                  fontFamily: 'var(--font-label)',
+                }}
+              >
+                ℹ <em>Advisory Note:</em> AI Likelihood is an automated heuristic provided to assist your evaluation. High likelihood does not automatically disqualify an entry; verify originality, creative execution, and consistency across mockups.
+              </p>
+            </Card>
+          )}
+
           {submission.description && (
             <Card accent="cyan">
               <h4 style={{ fontFamily: 'var(--font-label)', fontSize: 'var(--fs-label)', color: 'var(--text-secondary)', marginBottom: 'var(--space-xs)' }}>

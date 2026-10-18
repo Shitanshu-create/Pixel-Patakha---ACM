@@ -11,14 +11,20 @@ import {
   getSubmissionDetails,
 } from '../controllers/admin.controller.js';
 import { createAnnouncement, deleteAnnouncement } from '../controllers/announcement.controller.js';
+import { rerunSubmissionScan, getAiDetectionStatus } from '../controllers/aiDetection.controller.js';
 import authMiddleware from '../middlewares/auth.middleware.js';
 import roleMiddleware from '../middlewares/role.middleware.js';
 import validate from '../middlewares/validate.middleware.js';
+import { aiRecheckLimiter } from '../middlewares/rateLimit.middleware.js';
 
 const router = express.Router();
 
 router.use(authMiddleware);
 router.use(roleMiddleware('admin'));
+
+// AI Detection Admin Routes
+router.get('/ai-detection/status', getAiDetectionStatus);
+router.post('/submissions/:id/ai-check', aiRecheckLimiter, rerunSubmissionScan);
 
 // Competition
 router.put('/competition', updateCompetition);

@@ -1,0 +1,48 @@
+.ai-score-meter {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  width: 100%;
+}
+
+.ai-score-meter__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-body);
+  font-size: var(--fs-small);
+}
+
+.ai-score-meter__title {
+  color: var(--text-secondary);
+}
+
+.ai-score-meter__value {
+  font-weight: 600;
+}
+
+.ai-score-meter__track {
+  width: 100%;
+  background: var(--color-deep-navy);
+  border: 1px solid var(--color-panel-border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  position: relative;
+}
+
+.ai-score-meter--sm .ai-score-meter__track {
+  height: 6px;
+}
+
+.ai-score-meter--md .ai-score-meter__track {
+  height: 10px;
+}
+
+.ai-score-meter--lg .ai-score-meter__track {
+  height: 14px;
+}
+
+.ai-score-meter__fill {
+  height: 100%;
+  transition: width 0.4s ease, background-color 0.3s ease;
+}

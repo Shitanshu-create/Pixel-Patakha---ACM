@@ -6,6 +6,7 @@ import Badge from '../../../components/ui/Badge.jsx';
 import Button from '../../../components/ui/Button.jsx';
 import Spinner from '../../../components/ui/Spinner.jsx';
 import ErrorState from '../../../components/ui/ErrorState.jsx';
+import AiBudgetCard from '../components/AiBudgetCard.jsx';
 import { getTeams, getSubmissions, getJudges } from '../api/adminApi.js';
 import useCompetition from '../../common/hooks/useCompetition.js';
 import { getRegistrationStatus, getSubmissionStatus } from '../../common/utils/windowStatus.js';
@@ -121,6 +122,9 @@ export default function AdminOverviewPage() {
             </div>
           </div>
         </Card>
+
+        {/* AI Detection Budget & Operations */}
+        <AiBudgetCard />
       </div>
     </div>
   );

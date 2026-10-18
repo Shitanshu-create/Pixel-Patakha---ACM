@@ -2,6 +2,7 @@ import app from './app.js';
 import { port, nodeEnv } from './config/env.js';
 import connectDB from './config/db.js';
 import redisClient from './config/redis.js';
+import aiDetectionService from './services/aiDetection.service.js';
 
 const startServer = async () => {
   try {
@@ -15,12 +16,15 @@ const startServer = async () => {
       }
     }
 
+    aiDetectionService.start();
+
     const server = app.listen(port, () => {
       console.log(`Server running in ${nodeEnv} mode on port ${port}`);
     });
 
     const shutdown = async () => {
       console.log('Shutting down server gracefully...');
+      aiDetectionService.stop();
       server.close(async () => {
         if (redisClient && redisClient.status === 'ready') {
           await redisClient.quit().catch(() => {});

@@ -40,8 +40,23 @@ export const del = async (key) => {
   }
 };
 
+export const incrBy = async (key, amount = 1, ttl = null) => {
+  if (!redisClient || redisClient.status !== 'ready') return null;
+  try {
+    const res = await redisClient.incrby(key, amount);
+    if (ttl && res === amount) {
+      await redisClient.expire(key, ttl);
+    }
+    return res;
+  } catch (err) {
+    console.warn(`Redis incrBy error for key "${key}":`, err.message);
+    return null;
+  }
+};
+
 export default {
   get,
   set,
   del,
+  incrBy,
 };

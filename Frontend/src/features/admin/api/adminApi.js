@@ -45,6 +45,14 @@ export const deleteAnnouncement = async (id) => {
   return await axiosClient.delete(`/admin/announcements/${id}`);
 };
 
+export const rerunAiCheck = async (submissionId) => {
+  return await axiosClient.post(`/admin/submissions/${submissionId}/ai-check`);
+};
+
+export const getAiDetectionStatus = async () => {
+  return await axiosClient.get('/admin/ai-detection/status');
+};
+
 export default {
   updateCompetition,
   getTeams,
@@ -56,4 +64,6 @@ export default {
   getSubmissionById,
   createAnnouncement,
   deleteAnnouncement,
+  rerunAiCheck,
+  getAiDetectionStatus,
 };

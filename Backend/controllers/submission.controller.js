@@ -39,7 +39,28 @@ export const createSubmission = asyncHandler(async (req, res) => {
       reqHost: req.get('host'),
     });
 
-    return apiResponse(res, 201, 'Design submitted successfully', submission);
+    // Trigger AI detection asynchronously in the background
+    import('../services/aiDetection.service.js')
+      .then(({ default: aiDetectionService }) => {
+        aiDetectionService.enqueue(submission._id).catch((err) => {
+          console.error('[AI Detection] Background enqueue failed:', err.message);
+        });
+      })
+      .catch((err) => {
+        console.error('[AI Detection] Failed to load aiDetectionService:', err.message);
+      });
+
+    // Strip AI fields from client response
+    const subObj = submission.toObject ? submission.toObject() : { ...submission };
+    delete subObj.aiDetectionSummary;
+    if (Array.isArray(subObj.files)) {
+      subObj.files = subObj.files.map((file) => {
+        const { aiDetection, ...rest } = file;
+        return rest;
+      });
+    }
+
+    return apiResponse(res, 201, 'Design submitted successfully', subObj);
   } catch (err) {
     cleanupFiles();
     throw err;

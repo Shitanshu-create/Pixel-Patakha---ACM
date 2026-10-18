@@ -6,6 +6,7 @@ import Button from '../../../components/ui/Button.jsx';
 import Badge from '../../../components/ui/Badge.jsx';
 import Spinner from '../../../components/ui/Spinner.jsx';
 import ErrorState from '../../../components/ui/ErrorState.jsx';
+import AiScoreBadge from '../../../components/ui/AiScoreBadge.jsx';
 import useAdminSubmissions from '../hooks/useAdminSubmissions.js';
 import { formatDate } from '../../common/utils/formatDate.js';
 import useDocumentTitle from '../../common/hooks/useDocumentTitle.js';
@@ -15,7 +16,8 @@ export default function SubmissionsPage() {
   useDocumentTitle('All Submissions');
   const { submissions, loading, error, refetch } = useAdminSubmissions();
   const [search, setSearch] = useState('');
-  const [sortBy, setSortBy] = useState('time'); // time | score | reviews
+  const [sortBy, setSortBy] = useState('time'); // time | score | reviews | ai
+  const [aiFilter, setAiFilter] = useState('all'); // all | high | medium | low
 
   if (loading) {
     return (
@@ -31,14 +33,24 @@ export default function SubmissionsPage() {
 
   const filtered = (submissions || []).filter((sub) => {
     const q = search.toLowerCase().trim();
-    return (
+    const matchesSearch = (
       !q ||
       sub.teamName?.toLowerCase().includes(q) ||
       sub.title?.toLowerCase().includes(q)
     );
+    if (!matchesSearch) return false;
+
+    if (aiFilter !== 'all') {
+      const level = sub.aiDetectionSummary?.level || 'unknown';
+      if (level !== aiFilter) return false;
+    }
+    return true;
   });
 
   const sorted = [...filtered].sort((a, b) => {
+    if (sortBy === 'ai') {
+      return (b.aiDetectionSummary?.overallLikelihood || 0) - (a.aiDetectionSummary?.overallLikelihood || 0);
+    }
     if (sortBy === 'score') {
       return (b.averageScore || 0) - (a.averageScore || 0);
     }
@@ -68,6 +80,18 @@ export default function SubmissionsPage() {
       key: 'submittedAt',
       label: 'Submitted Time',
       render: (s) => formatDate(s.submittedAt),
+    },
+    {
+      key: 'aiDetection',
+      label: 'AI Likelihood',
+      render: (s) => (
+        <AiScoreBadge
+          status={s.aiDetectionSummary?.status}
+          likelihood={s.aiDetectionSummary?.overallLikelihood}
+          level={s.aiDetectionSummary?.level}
+          size="sm"
+        />
+      ),
     },
     {
       key: 'reviews',
@@ -137,6 +161,45 @@ export default function SubmissionsPage() {
             onClick={() => setSortBy('reviews')}
           >
             Most Reviews
+          </Button>
+          <Button
+            variant={sortBy === 'ai' ? 'primary' : 'ghost'}
+            size="sm"
+            onClick={() => setSortBy('ai')}
+          >
+            AI Likelihood
+          </Button>
+
+          <span style={{ fontSize: 'var(--fs-label-xs)', color: 'var(--text-secondary)', fontFamily: 'var(--font-label)', marginLeft: 'var(--space-s)' }}>
+            AI RISK:
+          </span>
+          <Button
+            variant={aiFilter === 'all' ? 'primary' : 'ghost'}
+            size="sm"
+            onClick={() => setAiFilter('all')}
+          >
+            All
+          </Button>
+          <Button
+            variant={aiFilter === 'high' ? 'danger' : 'ghost'}
+            size="sm"
+            onClick={() => setAiFilter('high')}
+          >
+            High AI
+          </Button>
+          <Button
+            variant={aiFilter === 'medium' ? 'secondary' : 'ghost'}
+            size="sm"
+            onClick={() => setAiFilter('medium')}
+          >
+            Med
+          </Button>
+          <Button
+            variant={aiFilter === 'low' ? 'secondary' : 'ghost'}
+            size="sm"
+            onClick={() => setAiFilter('low')}
+          >
+            Low
           </Button>
         </div>
       </div>

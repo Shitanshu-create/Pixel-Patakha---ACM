@@ -5,8 +5,8 @@ import Card from '../../../components/ui/Card.jsx';
 import Badge from '../../../components/ui/Badge.jsx';
 import Button from '../../../components/ui/Button.jsx';
 import Spinner from '../../../components/ui/Spinner.jsx';
-import ErrorState from '../../../components/ui/ErrorState.jsx';
 import FilePreviewGrid from '../../judge/components/FilePreviewGrid.jsx';
+import AiScanCard from '../components/AiScanCard.jsx';
 import { getSubmissionById } from '../api/adminApi.js';
 import { formatDate } from '../../common/utils/formatDate.js';
 import useDocumentTitle from '../../common/hooks/useDocumentTitle.js';
@@ -57,6 +57,9 @@ export default function SubmissionDetailPage() {
       </PageHeader>
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 'var(--space-xl)' }}>
+        {/* Sightengine AI Detection Analysis */}
+        <AiScanCard submission={submission} onScanUpdated={fetchDetail} />
+
         {/* Judge Reviews Breakdown */}
         <Card accent="yellow">
           <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.25rem', color: 'var(--color-cloud-white)', marginBottom: 'var(--space-m)' }}>

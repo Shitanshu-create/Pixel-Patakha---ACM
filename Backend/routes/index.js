@@ -7,8 +7,11 @@ import submissionRoutes from './submission.routes.js';
 import judgeRoutes from './judge.routes.js';
 import announcementRoutes from './announcement.routes.js';
 import adminRoutes from './admin.routes.js';
+import { apiLimiter } from '../middlewares/rateLimit.middleware.js';
 
 const router = express.Router();
+
+router.use(apiLimiter);
 
 router.get('/health', (req, res) => {
   res.status(200).json({

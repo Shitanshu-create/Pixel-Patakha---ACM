@@ -1,4 +1,5 @@
 import { formatFileSize } from '../../common/utils/formatFileSize.js';
+import AiScoreBadge from '../../../components/ui/AiScoreBadge.jsx';
 import '../styles/judge.css';
 
 export default function FilePreviewGrid({ files = [] }) {
@@ -10,21 +11,32 @@ export default function FilePreviewGrid({ files = [] }) {
     <div className="file-preview-gallery">
       {files.map((file, idx) => {
         const isPdf = file.mimeType === 'application/pdf' || file.filename?.endsWith('.pdf');
+        const ai = file.aiDetection;
 
         return (
           <div key={idx} className="file-preview-card">
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 'var(--space-xs)' }}>
               <span style={{ fontSize: 'var(--fs-small)', color: 'var(--color-cloud-white)', fontWeight: 700 }}>
                 {file.originalName} ({formatFileSize(file.size)})
               </span>
-              <a
-                href={file.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ fontSize: 'var(--fs-label-xs)', color: 'var(--color-electric-cyan)', fontWeight: 700 }}
-              >
-                Open Full Asset ↗
-              </a>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-xs)' }}>
+                {ai && (
+                  <AiScoreBadge
+                    status={ai.status}
+                    likelihood={ai.likelihood}
+                    level={ai.level}
+                    size="sm"
+                  />
+                )}
+                <a
+                  href={file.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ fontSize: 'var(--fs-label-xs)', color: 'var(--color-electric-cyan)', fontWeight: 700 }}
+                >
+                  Open Full Asset ↗
+                </a>
+              </div>
             </div>
 
             {isPdf ? (

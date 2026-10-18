@@ -29,13 +29,36 @@ export const createSubmission = async ({ teamId, title, description, uploadedFil
     throw new ApiError(400, 'Please upload at least one design file (PNG, JPG, WEBP, or PDF)');
   }
 
-  const files = uploadedFiles.map((file) => ({
-    originalName: file.originalname,
-    filename: file.filename,
-    url: `${reqProtocol}://${reqHost}/uploads/${file.filename}`,
-    mimeType: file.mimetype,
-    size: file.size,
-  }));
+  const files = uploadedFiles.map((file, idx) => {
+    const isImage = file.mimetype && file.mimetype.startsWith('image/');
+    const isPdf = file.mimetype === 'application/pdf';
+    let status = 'skipped';
+    let reason = null;
+
+    if (isPdf) {
+      status = 'skipped';
+      reason = 'pdf_not_supported';
+    } else if (isImage) {
+      status = idx < 5 ? 'pending' : 'skipped';
+      if (status === 'skipped') reason = 'file_limit_exceeded';
+    } else {
+      status = 'skipped';
+      reason = 'unsupported_type';
+    }
+
+    return {
+      originalName: file.originalname,
+      filename: file.filename,
+      url: `${reqProtocol}://${reqHost}/uploads/${file.filename}`,
+      mimeType: file.mimetype,
+      size: file.size,
+      aiDetection: {
+        status,
+        reason,
+        attempts: 0,
+      },
+    };
+  });
 
   const submission = await Submission.create({
     team: team._id,
@@ -44,16 +67,36 @@ export const createSubmission = async ({ teamId, title, description, uploadedFil
     description: description ? description.trim() : '',
     files,
     submittedAt: new Date(),
+    aiDetectionSummary: {
+      status: 'pending',
+      overallLikelihood: null,
+      level: 'unknown',
+      scannedFiles: 0,
+      totalFiles: files.length,
+      highRiskCount: 0,
+    },
   });
 
   return submission;
 };
 
 export const getMySubmission = async (teamId) => {
-  const submission = await Submission.findOne({ team: teamId });
+  const submission = await Submission.findOne({ team: teamId }).lean();
   if (!submission) {
     throw new ApiError(404, 'No submission found for this team');
   }
+
+  // Strip AI detection fields from team response
+  if (submission.aiDetectionSummary) {
+    delete submission.aiDetectionSummary;
+  }
+  if (Array.isArray(submission.files)) {
+    submission.files = submission.files.map((file) => {
+      const { aiDetection, ...rest } = file;
+      return rest;
+    });
+  }
+
   return submission;
 };
 
