@@ -18,8 +18,12 @@ try {
     console.log('Redis connected successfully');
   });
 
+  let warnedOnce = false;
   redisClient.on('error', (err) => {
-    console.warn(`Redis notice: ${err.message}. Running with DB fallback.`);
+    if (!warnedOnce) {
+      console.warn(`Redis notice: ${err.message || 'connection failed'}. Running with DB fallback.`);
+      warnedOnce = true;
+    }
   });
 } catch (err) {
   console.warn(`Redis init error: ${err.message}`);

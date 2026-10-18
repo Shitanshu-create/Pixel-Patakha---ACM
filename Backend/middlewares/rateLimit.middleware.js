@@ -1,4 +1,4 @@
-import rateLimit from 'express-rate-limit';
+import rateLimit, { ipKeyGenerator } from 'express-rate-limit';
 import { RedisStore } from 'rate-limit-redis';
 import redisClient from '../config/redis.js';
 import {
@@ -46,7 +46,7 @@ export const submissionLimiter = createLimiter({
   windowMs: 10 * 60 * 1000,
   max: rateLimitSubmitPer10Min,
   prefix: 'submit',
-  keyGenerator: (req) => req.user?.id || req.ip,
+  keyGenerator: (req) => req.user?.id || ipKeyGenerator(req),
   message: 'Submission rate limit reached. Please wait before submitting again.',
 });
 
@@ -54,7 +54,7 @@ export const aiRecheckLimiter = createLimiter({
   windowMs: 60 * 1000,
   max: rateLimitRecheckPerMin,
   prefix: 'ai-recheck',
-  keyGenerator: (req) => req.user?.id || req.ip,
+  keyGenerator: (req) => req.user?.id || ipKeyGenerator(req),
   message: 'AI recheck rate limit exceeded. Please wait a minute.',
 });
 

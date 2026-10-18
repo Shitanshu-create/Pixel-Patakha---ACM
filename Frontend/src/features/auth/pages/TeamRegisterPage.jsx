@@ -169,6 +169,7 @@ export default function TeamRegisterPage() {
 
   // Registration success state
   if (registeredSuccess) {
+    const successTeam = registeredSuccess.team || registeredSuccess;
     return (
       <div className="auth-container">
         <Card accent="yellow">
@@ -177,7 +178,7 @@ export default function TeamRegisterPage() {
               Quest Accepted!
             </h1>
             <p className="auth-header__subtitle">
-              Team &quot;{registeredSuccess.teamName}&quot; is officially registered for PIXEL PATAKHA.
+              Team &quot;{successTeam.teamName}&quot; is officially registered for PIXEL PATAKHA.
             </p>
           </div>
 
@@ -191,9 +192,7 @@ export default function TeamRegisterPage() {
               size="lg"
               fullWidth
               onClick={() => {
-                if (registeredSuccess) {
-                  adoptSession(registeredSuccess);
-                }
+                adoptSession(registeredSuccess);
                 navigate(ROUTES.TEAM_DASHBOARD);
               }}
             >

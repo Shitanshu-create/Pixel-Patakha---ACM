@@ -69,6 +69,8 @@ export const createSubmission = async ({ teamId, title, description, uploadedFil
     submittedAt: new Date(),
     aiDetectionSummary: {
       status: 'pending',
+      maxPercent: null,
+      avgPercent: null,
       overallLikelihood: null,
       level: 'unknown',
       scannedFiles: 0,

@@ -9,8 +9,8 @@ import Alert from '../../../components/ui/Alert.jsx';
 import Badge from '../../../components/ui/Badge.jsx';
 import Spinner from '../../../components/ui/Spinner.jsx';
 import ErrorState from '../../../components/ui/ErrorState.jsx';
-import Modal from '../../../components/ui/Modal.jsx';
-import { getJudges, createJudge } from '../api/adminApi.js';
+import Modal, { ConfirmDialog } from '../../../components/ui/Modal.jsx';
+import { getJudges, createJudge, deleteJudge } from '../api/adminApi.js';
 import { formatDate } from '../../common/utils/formatDate.js';
 import useDocumentTitle from '../../common/hooks/useDocumentTitle.js';
 import { useToast } from '../../common/context/ToastContext.jsx';
@@ -27,6 +27,23 @@ export default function JudgesPage() {
   const [formData, setFormData] = useState({ name: '', email: '', password: '' });
   const [formError, setFormError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [judgeToDelete, setJudgeToDelete] = useState(null);
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  const handleDeleteJudge = async () => {
+    if (!judgeToDelete) return;
+    setIsDeleting(true);
+    try {
+      await deleteJudge(judgeToDelete._id);
+      toast.success(`Judge "${judgeToDelete.name}" has been removed.`);
+      setJudgeToDelete(null);
+      fetchJudgesList();
+    } catch (err) {
+      toast.error(err.message || 'Failed to delete judge.');
+    } finally {
+      setIsDeleting(false);
+    }
+  };
 
   const handleCreateJudge = async (e) => {
     e.preventDefault();
@@ -81,6 +98,21 @@ export default function JudgesPage() {
       key: 'createdAt',
       label: 'Added On',
       render: (j) => formatDate(j.createdAt),
+    },
+    {
+      key: 'actions',
+      label: 'Actions',
+      align: 'right',
+      render: (j) => (
+        <Button
+          variant="danger"
+          size="sm"
+          onClick={() => setJudgeToDelete(j)}
+          style={{ padding: '4px 10px', fontSize: '0.78rem' }}
+        >
+          🗑 Delete
+        </Button>
+      ),
     },
   ];
 
@@ -170,6 +202,18 @@ export default function JudgesPage() {
           </div>
         </form>
       </Modal>
+
+      {/* Delete Judge Confirmation Dialog */}
+      <ConfirmDialog
+        isOpen={!!judgeToDelete}
+        onClose={() => setJudgeToDelete(null)}
+        onConfirm={handleDeleteJudge}
+        title="Delete Judge Account"
+        message={`Are you sure you want to remove judge "${judgeToDelete?.name}" (${judgeToDelete?.email})? All reviews authored by this judge will also be deleted.`}
+        confirmText="Delete Judge"
+        danger
+        loading={isDeleting}
+      />
     </div>
   );
 }

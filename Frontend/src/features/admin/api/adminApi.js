@@ -29,6 +29,10 @@ export const createJudge = async (judgeData) => {
   return await axiosClient.post('/admin/judges', judgeData);
 };
 
+export const deleteJudge = async (id) => {
+  return await axiosClient.delete(`/admin/judges/${id}`);
+};
+
 export const getSubmissions = async () => {
   return await axiosClient.get('/admin/submissions');
 };
@@ -60,6 +64,7 @@ export default {
   deleteTeam,
   getJudges,
   createJudge,
+  deleteJudge,
   getSubmissions,
   getSubmissionById,
   createAnnouncement,

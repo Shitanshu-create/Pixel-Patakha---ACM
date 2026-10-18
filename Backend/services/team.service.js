@@ -15,6 +15,8 @@ export const getTeamProfile = async (teamId) => {
     throw new ApiError(404, 'Team not found');
   }
 
+  const submission = await Submission.findOne({ team: teamId });
+
   let cleanSubmission = null;
   if (submission) {
     const subObj = submission.toObject ? submission.toObject() : { ...submission };

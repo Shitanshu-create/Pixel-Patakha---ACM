@@ -240,3 +240,102 @@ img, svg {
     scroll-behavior: auto !important;
   }
 }
+
+/* ============================================================
+   Filters & Segmented Control Styles
+   ============================================================ */
+.filter-bar-shell {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-s);
+  margin-bottom: var(--space-l);
+  padding: 8px 12px;
+  background: rgba(6, 18, 44, 0.7);
+  border: 1px solid rgba(0, 217, 255, 0.18);
+  border-radius: var(--radius-sm);
+  backdrop-filter: blur(8px);
+}
+
+.filter-group {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+  background: rgba(3, 10, 24, 0.85);
+  padding: 3px;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.filter-group-label {
+  font-family: var(--font-label);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  color: var(--text-secondary);
+  padding: 0 8px;
+  text-transform: uppercase;
+  user-select: none;
+}
+
+.filter-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 30px;
+  padding: 0 12px;
+  font-family: var(--font-body);
+  font-size: var(--fs-small);
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+}
+
+.filter-pill:hover {
+  color: var(--color-cloud-white);
+  background: rgba(0, 217, 255, 0.1);
+  border-color: rgba(0, 217, 255, 0.3);
+}
+
+.filter-pill--active {
+  color: var(--color-cosmic-black) !important;
+  background: var(--color-arcade-yellow) !important;
+  border-color: var(--color-arcade-yellow) !important;
+  box-shadow: 0 0 12px rgba(255, 226, 41, 0.35) !important;
+  font-weight: 700;
+}
+
+.filter-pill--cyan.filter-pill--active {
+  color: var(--color-cosmic-black) !important;
+  background: var(--color-electric-cyan) !important;
+  border-color: var(--color-electric-cyan) !important;
+  box-shadow: 0 0 12px rgba(0, 217, 255, 0.4) !important;
+}
+
+.filter-pill--danger.filter-pill--active {
+  color: var(--color-cloud-white) !important;
+  background: var(--color-error-red) !important;
+  border-color: var(--color-error-red) !important;
+  box-shadow: 0 0 12px rgba(255, 83, 100, 0.45) !important;
+}
+
+.filter-pill--warning.filter-pill--active {
+  color: var(--color-cosmic-black) !important;
+  background: var(--color-arcade-yellow) !important;
+  border-color: var(--color-arcade-yellow) !important;
+  box-shadow: 0 0 12px rgba(255, 226, 41, 0.4) !important;
+}
+
+.filter-pill--success.filter-pill--active {
+  color: var(--color-cosmic-black) !important;
+  background: var(--color-success-green) !important;
+  border-color: var(--color-success-green) !important;
+  box-shadow: 0 0 12px rgba(72, 224, 138, 0.4) !important;
+}

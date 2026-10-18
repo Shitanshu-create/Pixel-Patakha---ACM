@@ -66,9 +66,9 @@ export function AuthProvider({ children }) {
   }, []);
 
   const registerTeam = async (data) => {
-    // Return registration result without auto-logging in immediately
-    // Allows user to see registration confirmation and click "Go To Dashboard"
-    return await authApi.registerTeam(data);
+    const res = await authApi.registerTeam(data);
+    adoptSession(res);
+    return res;
   };
 
   const loginTeam = async (credentials) => {

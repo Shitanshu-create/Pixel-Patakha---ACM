@@ -7,6 +7,7 @@ import {
   deleteTeam,
   createJudge,
   getJudges,
+  deleteJudge,
   getSubmissions,
   getSubmissionDetails,
 } from '../controllers/admin.controller.js';
@@ -46,6 +47,7 @@ router.post(
   createJudge
 );
 router.get('/judges', getJudges);
+router.delete('/judges/:id', deleteJudge);
 
 // Submissions
 router.get('/submissions', getSubmissions);

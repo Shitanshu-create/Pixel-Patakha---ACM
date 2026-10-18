@@ -62,9 +62,11 @@ const recomputeSummary = async (submissionId) => {
     status,
     maxPercent,
     avgPercent,
-    level,
+    overallLikelihood: maxPercent,
+    level: level || 'unknown',
     scannedFiles: scanned.length,
     totalFiles,
+    highRiskCount: scanned.filter((f) => f.aiDetection.level === 'high').length,
     checkedAt: new Date(),
   };
 

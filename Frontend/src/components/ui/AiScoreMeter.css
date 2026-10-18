@@ -1,7 +1,7 @@
 .ai-score-meter {
   display: flex;
   flex-direction: column;
-  gap: var(--space-xs);
+  gap: 8px;
   width: 100%;
 }
 
@@ -15,34 +15,79 @@
 
 .ai-score-meter__title {
   color: var(--text-secondary);
+  font-family: var(--font-label);
+  font-size: 0.76rem;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
 }
 
 .ai-score-meter__value {
-  font-weight: 600;
+  font-weight: 700;
+  font-family: var(--font-label);
+  font-size: 0.84rem;
+  letter-spacing: 0.5px;
 }
 
 .ai-score-meter__track {
   width: 100%;
-  background: var(--color-deep-navy);
-  border: 1px solid var(--color-panel-border);
+  background: rgba(3, 10, 24, 0.85);
+  border: 1px solid rgba(0, 217, 255, 0.22);
   border-radius: var(--radius-sm);
   overflow: hidden;
   position: relative;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.6);
 }
 
 .ai-score-meter--sm .ai-score-meter__track {
-  height: 6px;
-}
-
-.ai-score-meter--md .ai-score-meter__track {
   height: 10px;
 }
 
-.ai-score-meter--lg .ai-score-meter__track {
+.ai-score-meter--md .ai-score-meter__track {
   height: 14px;
 }
 
+.ai-score-meter--lg .ai-score-meter__track {
+  height: 20px;
+}
+
+/* Threshold Markers (30% and 70%) */
+.ai-score-meter__marker {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: rgba(255, 255, 255, 0.18);
+  z-index: 2;
+  pointer-events: none;
+}
+
+.ai-score-meter__marker--review {
+  left: 30%;
+  border-right: 1px dashed rgba(255, 226, 41, 0.4);
+}
+
+.ai-score-meter__marker--high {
+  left: 70%;
+  border-right: 1px dashed rgba(255, 83, 100, 0.4);
+}
+
+/* Progress Fill */
 .ai-score-meter__fill {
   height: 100%;
-  transition: width 0.4s ease, background-color 0.3s ease;
+  border-radius: 2px;
+  transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  z-index: 1;
+}
+
+/* Skipped / Unscanned Track Pattern */
+.ai-score-meter__track--skipped {
+  background: repeating-linear-gradient(
+    -45deg,
+    rgba(6, 18, 44, 0.8),
+    rgba(6, 18, 44, 0.8) 8px,
+    rgba(14, 32, 70, 0.5) 8px,
+    rgba(14, 32, 70, 0.5) 16px
+  );
+  border-color: rgba(255, 255, 255, 0.12);
 }

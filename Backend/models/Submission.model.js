@@ -5,12 +5,12 @@ const aiDetectionFileSchema = new mongoose.Schema(
     provider: { type: String, default: 'sightengine' },
     status: {
       type: String,
-      enum: ['pending', 'processing', 'done', 'skipped', 'failed'],
+      enum: ['pending', 'processing', 'scanning', 'done', 'completed', 'skipped', 'failed'],
       default: 'pending',
     },
     score: { type: Number, min: 0, max: 1 },
     percent: { type: Number, min: 0, max: 100 },
-    level: { type: String, enum: ['low', 'review', 'high'] },
+    level: { type: String, enum: ['low', 'medium', 'review', 'high', 'unknown'] },
     topGenerator: {
       name: String,
       percent: Number,
@@ -60,12 +60,14 @@ const aiDetectionSummarySchema = new mongoose.Schema(
   {
     status: {
       type: String,
-      enum: ['pending', 'partial', 'done', 'skipped', 'failed'],
+      enum: ['pending', 'processing', 'scanning', 'partial', 'done', 'completed', 'skipped', 'failed'],
       default: 'pending',
     },
     maxPercent: Number,
     avgPercent: Number,
-    level: { type: String, enum: ['low', 'review', 'high'] },
+    overallLikelihood: Number,
+    highRiskCount: Number,
+    level: { type: String, enum: ['low', 'medium', 'review', 'high', 'unknown'] },
     scannedFiles: Number,
     totalFiles: Number,
     checkedAt: Date,

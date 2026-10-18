@@ -137,70 +137,70 @@ export default function SubmissionsPage() {
           className="search-filter-bar__input"
         />
 
-        <div style={{ display: 'flex', gap: 'var(--space-s)', alignItems: 'center' }}>
-          <span style={{ fontSize: 'var(--fs-label-xs)', color: 'var(--text-secondary)', fontFamily: 'var(--font-label)' }}>
-            SORT:
-          </span>
-          <Button
-            variant={sortBy === 'time' ? 'primary' : 'ghost'}
-            size="sm"
-            onClick={() => setSortBy('time')}
-          >
-            Time
-          </Button>
-          <Button
-            variant={sortBy === 'score' ? 'primary' : 'ghost'}
-            size="sm"
-            onClick={() => setSortBy('score')}
-          >
-            Highest Score
-          </Button>
-          <Button
-            variant={sortBy === 'reviews' ? 'primary' : 'ghost'}
-            size="sm"
-            onClick={() => setSortBy('reviews')}
-          >
-            Most Reviews
-          </Button>
-          <Button
-            variant={sortBy === 'ai' ? 'primary' : 'ghost'}
-            size="sm"
-            onClick={() => setSortBy('ai')}
-          >
-            AI Likelihood
-          </Button>
+        <div style={{ display: 'flex', gap: 'var(--space-m)', alignItems: 'center', flexWrap: 'wrap' }}>
+          <div className="filter-group">
+            <span className="filter-group-label">SORT:</span>
+            <button
+              type="button"
+              className={`filter-pill filter-pill--cyan ${sortBy === 'time' ? 'filter-pill--active' : ''}`}
+              onClick={() => setSortBy('time')}
+            >
+              Time
+            </button>
+            <button
+              type="button"
+              className={`filter-pill filter-pill--cyan ${sortBy === 'score' ? 'filter-pill--active' : ''}`}
+              onClick={() => setSortBy('score')}
+            >
+              Highest Score
+            </button>
+            <button
+              type="button"
+              className={`filter-pill filter-pill--cyan ${sortBy === 'reviews' ? 'filter-pill--active' : ''}`}
+              onClick={() => setSortBy('reviews')}
+            >
+              Most Reviews
+            </button>
+            <button
+              type="button"
+              className={`filter-pill filter-pill--cyan ${sortBy === 'ai' ? 'filter-pill--active' : ''}`}
+              onClick={() => setSortBy('ai')}
+            >
+              AI Likelihood
+            </button>
+          </div>
 
-          <span style={{ fontSize: 'var(--fs-label-xs)', color: 'var(--text-secondary)', fontFamily: 'var(--font-label)', marginLeft: 'var(--space-s)' }}>
-            AI RISK:
-          </span>
-          <Button
-            variant={aiFilter === 'all' ? 'primary' : 'ghost'}
-            size="sm"
-            onClick={() => setAiFilter('all')}
-          >
-            All
-          </Button>
-          <Button
-            variant={aiFilter === 'high' ? 'danger' : 'ghost'}
-            size="sm"
-            onClick={() => setAiFilter('high')}
-          >
-            High AI
-          </Button>
-          <Button
-            variant={aiFilter === 'medium' ? 'secondary' : 'ghost'}
-            size="sm"
-            onClick={() => setAiFilter('medium')}
-          >
-            Med
-          </Button>
-          <Button
-            variant={aiFilter === 'low' ? 'secondary' : 'ghost'}
-            size="sm"
-            onClick={() => setAiFilter('low')}
-          >
-            Low
-          </Button>
+          <div className="filter-group">
+            <span className="filter-group-label">AI RISK:</span>
+            <button
+              type="button"
+              className={`filter-pill ${aiFilter === 'all' ? 'filter-pill--active' : ''}`}
+              onClick={() => setAiFilter('all')}
+            >
+              All
+            </button>
+            <button
+              type="button"
+              className={`filter-pill filter-pill--danger ${aiFilter === 'high' ? 'filter-pill--active' : ''}`}
+              onClick={() => setAiFilter('high')}
+            >
+              High AI
+            </button>
+            <button
+              type="button"
+              className={`filter-pill filter-pill--warning ${aiFilter === 'medium' ? 'filter-pill--active' : ''}`}
+              onClick={() => setAiFilter('medium')}
+            >
+              Med
+            </button>
+            <button
+              type="button"
+              className={`filter-pill filter-pill--success ${aiFilter === 'low' ? 'filter-pill--active' : ''}`}
+              onClick={() => setAiFilter('low')}
+            >
+              Low
+            </button>
+          </div>
         </div>
       </div>
 

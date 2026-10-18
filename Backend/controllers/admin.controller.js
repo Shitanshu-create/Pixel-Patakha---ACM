@@ -1,5 +1,6 @@
 import Competition from '../models/Competition.model.js';
 import User from '../models/User.model.js';
+import Review from '../models/Review.model.js';
 import teamService from '../services/team.service.js';
 import submissionService from '../services/submission.service.js';
 import cacheService from '../services/cache.service.js';
@@ -67,6 +68,20 @@ export const getJudges = asyncHandler(async (req, res) => {
   return apiResponse(res, 200, 'Judges fetched successfully', judges);
 });
 
+export const deleteJudge = asyncHandler(async (req, res) => {
+  const judge = await User.findOne({ _id: req.params.id, role: 'judge' });
+  if (!judge) {
+    throw new ApiError(404, 'Judge not found');
+  }
+
+  // Remove reviews written by this judge
+  await Review.deleteMany({ judge: req.params.id });
+  // Remove judge user
+  await User.findByIdAndDelete(req.params.id);
+
+  return apiResponse(res, 200, 'Judge account deleted successfully');
+});
+
 export const getSubmissions = asyncHandler(async (req, res) => {
   const submissions = await submissionService.getAdminSubmissions();
   return apiResponse(res, 200, 'All submissions fetched successfully', submissions);
@@ -84,6 +99,7 @@ export default {
   deleteTeam,
   createJudge,
   getJudges,
+  deleteJudge,
   getSubmissions,
   getSubmissionDetails,
 };

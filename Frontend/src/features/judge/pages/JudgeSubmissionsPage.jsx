@@ -42,28 +42,31 @@ export default function JudgeSubmissionsPage() {
         subtitle="Review participant designs, examine files, and submit official evaluations."
       />
 
-      <div className="filter-bar">
-        <Button
-          variant={filter === 'all' ? 'primary' : 'secondary'}
-          size="sm"
-          onClick={() => setFilter('all')}
-        >
-          All ({submissions?.length || 0})
-        </Button>
-        <Button
-          variant={filter === 'pending' ? 'primary' : 'secondary'}
-          size="sm"
-          onClick={() => setFilter('pending')}
-        >
-          Pending ({pendingCount})
-        </Button>
-        <Button
-          variant={filter === 'reviewed' ? 'primary' : 'secondary'}
-          size="sm"
-          onClick={() => setFilter('reviewed')}
-        >
-          Reviewed ({reviewedCount})
-        </Button>
+      <div className="filter-bar-shell">
+        <div className="filter-group">
+          <span className="filter-group-label">STATUS:</span>
+          <button
+            type="button"
+            className={`filter-pill ${filter === 'all' ? 'filter-pill--active' : ''}`}
+            onClick={() => setFilter('all')}
+          >
+            All ({submissions?.length || 0})
+          </button>
+          <button
+            type="button"
+            className={`filter-pill filter-pill--warning ${filter === 'pending' ? 'filter-pill--active' : ''}`}
+            onClick={() => setFilter('pending')}
+          >
+            ⏳ Pending ({pendingCount})
+          </button>
+          <button
+            type="button"
+            className={`filter-pill filter-pill--success ${filter === 'reviewed' ? 'filter-pill--active' : ''}`}
+            onClick={() => setFilter('reviewed')}
+          >
+            ✓ Reviewed ({reviewedCount})
+          </button>
+        </div>
       </div>
 
       {filtered.length === 0 ? (

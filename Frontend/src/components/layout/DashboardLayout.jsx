@@ -71,15 +71,22 @@ export default function DashboardLayout() {
               }
               onClick={() => setSidebarOpen(false)}
             >
-              <span>{link.label}</span>
+              <span className="dashboard-sidebar__link-text">{link.label}</span>
+              <span className="dashboard-sidebar__link-arrow">→</span>
             </NavLink>
           ))}
         </nav>
 
         <div className="dashboard-sidebar__footer">
-          <Button variant="ghost" size="sm" onClick={logout} fullWidth>
-            ⏻ Log Out
-          </Button>
+          <button
+            type="button"
+            className="dashboard-sidebar__logout-btn"
+            onClick={logout}
+            aria-label="Log out of account"
+          >
+            <span style={{ fontSize: '1rem' }}>⏻</span>
+            <span>LOG OUT</span>
+          </button>
         </div>
       </aside>
 
