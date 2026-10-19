@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import mongoose from 'mongoose';
 import { clientUrl } from './config/env.js';
 import apiRoutes from './routes/index.js';
 import { notFound, errorHandler } from './middlewares/error.middleware.js';
@@ -32,6 +33,19 @@ app.use(express.urlencoded({ extended: true }));
 
 // Serve static uploads
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+// Root & Health Check routes (for Render, container health checks & uptime monitors)
+app.get(['/', '/health'], (req, res) => {
+  const dbStatus = mongoose.connection.readyState === 1 ? 'connected' : 'disconnected';
+  res.status(200).json({
+    status: 'ok',
+    success: true,
+    message: 'Pixel Patakha API server is running healthy',
+    uptime: Math.round(process.uptime()),
+    database: dbStatus,
+    timestamp: new Date().toISOString(),
+  });
+});
 
 // Mount API routes
 app.use('/api', apiRoutes);

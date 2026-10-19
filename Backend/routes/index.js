@@ -13,13 +13,18 @@ const router = express.Router();
 
 router.use(apiLimiter);
 
+import mongoose from 'mongoose';
+
 router.get('/health', (req, res) => {
+  const dbStatus = mongoose.connection.readyState === 1 ? 'connected' : 'disconnected';
   res.status(200).json({
+    status: 'ok',
     success: true,
     message: 'Server is healthy',
     data: {
-      uptime: process.uptime(),
-      timestamp: new Date(),
+      uptime: Math.round(process.uptime()),
+      database: dbStatus,
+      timestamp: new Date().toISOString(),
     },
   });
 });
