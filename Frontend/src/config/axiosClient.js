@@ -32,7 +32,14 @@ axiosClient.interceptors.response.use(
     }
 
     const { status, data } = error.response;
-    const message = data?.message || 'An unexpected error occurred.';
+    let message = data?.message;
+    if (!message) {
+      if (status === 404) {
+        message = 'API endpoint not found (404). Make sure VITE_API_URL is configured in your Netlify Environment Variables with your Render backend URL (e.g. https://your-app.onrender.com/api).';
+      } else {
+        message = 'An unexpected error occurred.';
+      }
+    }
     const fieldErrors = {};
 
     if (Array.isArray(data?.errors)) {
