@@ -1,9 +1,8 @@
-import fs from 'fs';
-import path from 'path';
 import Submission from '../models/Submission.model.js';
 import Team from '../models/Team.model.js';
 import Review from '../models/Review.model.js';
 import ApiError from '../utils/ApiError.js';
+import { uploadSubmissionFile } from './storage.service.js';
 
 export const createSubmission = async ({ teamId, title, description, uploadedFiles, reqProtocol, reqHost }) => {
   const team = await Team.findById(teamId);
@@ -13,15 +12,6 @@ export const createSubmission = async ({ teamId, title, description, uploadedFil
 
   const existingSubmission = await Submission.findOne({ team: teamId });
   if (existingSubmission) {
-    if (uploadedFiles && uploadedFiles.length > 0) {
-      uploadedFiles.forEach((file) => {
-        try {
-          fs.unlinkSync(file.path);
-        } catch (e) {
-          console.warn('Failed to delete redundant uploaded file:', e.message);
-        }
-      });
-    }
     throw new ApiError(409, 'Team has already submitted a design');
   }
 
@@ -29,36 +19,40 @@ export const createSubmission = async ({ teamId, title, description, uploadedFil
     throw new ApiError(400, 'Please upload at least one design file (PNG, JPG, WEBP, or PDF)');
   }
 
-  const files = uploadedFiles.map((file, idx) => {
-    const isImage = file.mimetype && file.mimetype.startsWith('image/');
-    const isPdf = file.mimetype === 'application/pdf';
-    let status = 'skipped';
-    let reason = null;
+  const files = await Promise.all(
+    uploadedFiles.map(async (file, idx) => {
+      const isImage = file.mimetype && file.mimetype.startsWith('image/');
+      const isPdf = file.mimetype === 'application/pdf';
+      let status = 'skipped';
+      let reason = null;
 
-    if (isPdf) {
-      status = 'skipped';
-      reason = 'pdf_not_supported';
-    } else if (isImage) {
-      status = idx < 5 ? 'pending' : 'skipped';
-      if (status === 'skipped') reason = 'file_limit_exceeded';
-    } else {
-      status = 'skipped';
-      reason = 'unsupported_type';
-    }
+      if (isPdf) {
+        status = 'skipped';
+        reason = 'pdf_not_supported';
+      } else if (isImage) {
+        status = idx < 5 ? 'pending' : 'skipped';
+        if (status === 'skipped') reason = 'file_limit_exceeded';
+      } else {
+        status = 'skipped';
+        reason = 'unsupported_type';
+      }
 
-    return {
-      originalName: file.originalname,
-      filename: file.filename,
-      url: `${reqProtocol}://${reqHost}/uploads/${file.filename}`,
-      mimeType: file.mimetype,
-      size: file.size,
-      aiDetection: {
-        status,
-        reason,
-        attempts: 0,
-      },
-    };
-  });
+      const uploaded = await uploadSubmissionFile({ file, reqProtocol, reqHost });
+
+      return {
+        originalName: uploaded.originalName,
+        filename: uploaded.filename,
+        url: uploaded.url,
+        mimeType: uploaded.mimeType,
+        size: uploaded.size,
+        aiDetection: {
+          status,
+          reason,
+          attempts: 0,
+        },
+      };
+    })
+  );
 
   const submission = await Submission.create({
     team: team._id,

@@ -53,6 +53,12 @@ export const rateLimitApiPer5Min = parseInt(process.env.RATE_LIMIT_API_PER_5MIN 
 export const rateLimitSubmitPer10Min = parseInt(process.env.RATE_LIMIT_SUBMIT_PER_10MIN || '10', 10);
 export const rateLimitRecheckPerMin = parseInt(process.env.RATE_LIMIT_RECHECK_PER_MIN || '5', 10);
 
+// Supabase Storage
+export const supabaseUrl = process.env.SUPABASE_URL || '';
+export const supabaseKey = process.env.SUPABASE_KEY || '';
+export const supabaseBucket = process.env.SUPABASE_BUCKET || 'Pixel Patakha ACM Submissions';
+export const isSupabaseConfigured = Boolean(supabaseUrl && supabaseKey);
+
 export default {
   port,
   nodeEnv,
@@ -84,4 +90,8 @@ export default {
   rateLimitApiPer5Min,
   rateLimitSubmitPer10Min,
   rateLimitRecheckPerMin,
+  supabaseUrl,
+  supabaseKey,
+  supabaseBucket,
+  isSupabaseConfigured,
 };

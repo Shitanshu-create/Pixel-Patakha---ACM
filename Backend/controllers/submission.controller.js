@@ -12,7 +12,9 @@ export const createSubmission = asyncHandler(async (req, res) => {
     if (uploadedFiles && uploadedFiles.length > 0) {
       uploadedFiles.forEach((file) => {
         try {
-          fs.unlinkSync(file.path);
+          if (file.path && fs.existsSync(file.path)) {
+            fs.unlinkSync(file.path);
+          }
         } catch {
           // ignore unlink error
         }

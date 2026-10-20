@@ -1,13 +1,8 @@
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
 import Team from '../models/Team.model.js';
 import Submission from '../models/Submission.model.js';
 import Review from '../models/Review.model.js';
 import ApiError from '../utils/ApiError.js';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+import { deleteSubmissionFile } from './storage.service.js';
 
 export const getTeamProfile = async (teamId) => {
   const team = await Team.findById(teamId);
@@ -91,18 +86,14 @@ export const deleteTeam = async (teamId) => {
   const submission = await Submission.findOne({ team: teamId });
   if (submission) {
     if (submission.files && Array.isArray(submission.files)) {
-      submission.files.forEach((file) => {
-        if (file.filename) {
-          const filePath = path.resolve(__dirname, '../uploads', file.filename);
-          if (fs.existsSync(filePath)) {
-            try {
-              fs.unlinkSync(filePath);
-            } catch (err) {
-              console.warn('Error deleting submission file:', err.message);
-            }
+      await Promise.all(
+        submission.files.map((file) => {
+          if (file.filename) {
+            return deleteSubmissionFile(file.filename);
           }
-        }
-      });
+          return Promise.resolve();
+        })
+      );
     }
 
     await Review.deleteMany({ submission: submission._id });

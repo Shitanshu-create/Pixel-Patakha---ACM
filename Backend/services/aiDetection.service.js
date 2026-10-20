@@ -4,6 +4,7 @@ import { fileURLToPath } from 'url';
 import Submission from '../models/Submission.model.js';
 import sightengineService from './sightengine.service.js';
 import aiBudget from './aiBudget.service.js';
+import { getFileBuffer } from './storage.service.js';
 import { toPercent, levelFromPercent, topGenerator } from '../utils/aiScore.js';
 import {
   aiDetectionEnabled,
@@ -132,6 +133,7 @@ const tick = async () => {
             claimedTarget = {
               submissionId: sub._id,
               filename: file.filename,
+              url: file.url,
               mimeType: file.mimeType,
               originalName: file.originalName,
               attempts: (file.aiDetection?.attempts || 0) + 1,
@@ -147,8 +149,8 @@ const tick = async () => {
 
     await aiBudget.waitTurn();
 
-    const filePath = path.join(uploadsDir, claimedTarget.filename);
-    if (!fs.existsSync(filePath)) {
+    const fileBuffer = await getFileBuffer(claimedTarget.filename, claimedTarget.url);
+    if (!fileBuffer) {
       await Submission.updateOne(
         { _id: claimedTarget.submissionId, 'files.filename': claimedTarget.filename },
         {
@@ -162,8 +164,6 @@ const tick = async () => {
       await recomputeSummary(claimedTarget.submissionId);
       return;
     }
-
-    const fileBuffer = fs.readFileSync(filePath);
     const checkResult = await sightengineService.check(
       fileBuffer,
       claimedTarget.mimeType,
