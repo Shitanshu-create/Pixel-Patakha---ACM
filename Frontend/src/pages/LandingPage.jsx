@@ -2,7 +2,7 @@ import HeroSection from '../components/landing/HeroSection.jsx';
 import FeatureCards from '../components/landing/FeatureCards.jsx';
 import TimelineSection from '../components/landing/TimelineSection.jsx';
 import RulesSection from '../components/landing/RulesSection.jsx';
-import ShowcaseSection from '../components/landing/ShowcaseSection.jsx';
+// import ShowcaseSection from '../components/landing/ShowcaseSection.jsx';
 import FaqSection from '../components/landing/FaqSection.jsx';
 import useDocumentTitle from '../features/common/hooks/useDocumentTitle.js';
 import { useRef } from 'react';
@@ -56,7 +56,7 @@ export default function LandingPage() {
       <FeatureCards />
       <TimelineSection />
       <RulesSection />
-      <ShowcaseSection />
+      {/* <ShowcaseSection /> */}
       <FaqSection />
     </div>
   );
