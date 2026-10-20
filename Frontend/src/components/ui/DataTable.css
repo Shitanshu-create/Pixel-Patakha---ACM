@@ -15,14 +15,16 @@
 }
 
 .data-table th {
-  padding: var(--space-m);
-  background-color: color-mix(in srgb, var(--color-cosmic-black) 50%, var(--color-deep-navy));
+  padding: 14px var(--space-m);
+  background-color: color-mix(in srgb, var(--color-cosmic-black) 60%, var(--color-deep-navy));
   font-family: var(--font-label);
-  font-size: var(--fs-label-xs);
+  font-size: 0.75rem;
+  font-weight: 700;
   text-transform: uppercase;
   color: var(--color-electric-cyan);
   border-bottom: 2px solid var(--border-subtle);
-  letter-spacing: 0.5px;
+  letter-spacing: 0.8px;
+  white-space: nowrap;
 }
 
 .data-table td {

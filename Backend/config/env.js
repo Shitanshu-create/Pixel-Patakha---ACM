@@ -31,7 +31,7 @@ export const maxTeamSize = parseInt(process.env.MAX_TEAM_SIZE || '3', 10);
 
 // AI image detection (Sightengine)
 export const aiDetectionEnabled =
-  process.env.AI_DETECTION_ENABLED === 'true' &&
+  process.env.AI_DETECTION_ENABLED !== 'false' &&
   Boolean(process.env.SIGHTENGINE_API_USER && process.env.SIGHTENGINE_API_SECRET);
 export const sightengineApiUser = process.env.SIGHTENGINE_API_USER || '';
 export const sightengineApiSecret = process.env.SIGHTENGINE_API_SECRET || '';

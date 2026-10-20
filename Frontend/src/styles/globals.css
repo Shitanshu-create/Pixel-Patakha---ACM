@@ -270,11 +270,11 @@ img, svg {
 
 .filter-group-label {
   font-family: var(--font-label);
-  font-size: 0.68rem;
-  font-weight: 700;
+  font-size: 0.75rem;
+  font-weight: 800;
   letter-spacing: 0.8px;
-  color: var(--text-secondary);
-  padding: 0 8px;
+  color: var(--color-electric-cyan);
+  padding: 0 4px;
   text-transform: uppercase;
   user-select: none;
 }
@@ -284,15 +284,15 @@ img, svg {
   align-items: center;
   justify-content: center;
   gap: 6px;
-  min-height: 30px;
-  padding: 0 12px;
+  min-height: 32px;
+  padding: 0 14px;
   font-family: var(--font-body);
-  font-size: var(--fs-small);
+  font-size: 0.8125rem;
   font-weight: 600;
-  color: var(--text-secondary);
-  background: transparent;
-  border: 1px solid transparent;
-  border-radius: 3px;
+  color: var(--color-cloud-white);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
   cursor: pointer;
   transition: all var(--transition-fast);
   white-space: nowrap;
@@ -300,8 +300,8 @@ img, svg {
 
 .filter-pill:hover {
   color: var(--color-cloud-white);
-  background: rgba(0, 217, 255, 0.1);
-  border-color: rgba(0, 217, 255, 0.3);
+  background: rgba(0, 217, 255, 0.15);
+  border-color: var(--color-electric-cyan);
 }
 
 .filter-pill--active {

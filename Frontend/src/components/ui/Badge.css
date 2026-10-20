@@ -2,13 +2,14 @@
   display: inline-flex;
   align-items: center;
   gap: var(--space-xs);
-  padding: 3px var(--space-s);
+  padding: 4px 10px;
   font-family: var(--font-label);
-  font-size: var(--fs-label-xs);
+  font-size: 0.8125rem;
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   border-radius: var(--radius-sm);
-  line-height: 1.2;
+  line-height: 1.25;
   white-space: nowrap;
   user-select: none;
 }

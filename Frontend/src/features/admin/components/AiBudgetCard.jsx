@@ -31,12 +31,16 @@ export const AiBudgetCard = () => {
   }
 
   const enabled = status?.enabled;
-  const budget = status?.budget || {};
-  const queue = status?.queue || {};
+  const dailyUsage = status?.budget?.dailyUsage ?? status?.usage?.day?.used ?? 0;
+  const dailyLimit = status?.budget?.dailyLimit ?? status?.usage?.day?.limit ?? 500;
+  const monthlyUsage = status?.budget?.monthlyUsage ?? status?.usage?.month?.used ?? 0;
+  const monthlyLimit = status?.budget?.monthlyLimit ?? status?.usage?.month?.limit ?? 2000;
+  const pendingFiles = status?.queue?.pendingFiles ?? status?.queue?.pending ?? 0;
+  const pendingSubmissions = status?.queue?.pendingSubmissions ?? 0;
   const circuitBreaker = status?.circuitBreaker || {};
 
-  const dailyPercent = budget.dailyLimit ? Math.round((budget.dailyUsage / budget.dailyLimit) * 100) : 0;
-  const monthlyPercent = budget.monthlyLimit ? Math.round((budget.monthlyUsage / budget.monthlyLimit) * 100) : 0;
+  const dailyPercent = dailyLimit ? Math.round((dailyUsage / dailyLimit) * 100) : 0;
+  const monthlyPercent = monthlyLimit ? Math.round((monthlyUsage / monthlyLimit) * 100) : 0;
 
   return (
     <div
@@ -51,65 +55,73 @@ export const AiBudgetCard = () => {
       }}
     >
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h3 style={{ margin: 0, fontFamily: 'var(--font-display)', fontSize: 'var(--fs-card-title)' }}>
+        <h3 style={{ margin: 0, fontFamily: 'var(--font-display)', fontSize: 'var(--fs-card-title)', color: 'var(--color-cloud-white)' }}>
           AI Detection Quota & Queue
         </h3>
         <span
           style={{
-            fontSize: 'var(--fs-label)',
-            fontWeight: 600,
+            fontSize: '0.75rem',
+            fontWeight: 700,
+            fontFamily: 'var(--font-label)',
             textTransform: 'uppercase',
-            padding: '2px 8px',
+            letterSpacing: '0.5px',
+            padding: '3px 10px',
             borderRadius: 'var(--radius-sm)',
-            color: enabled ? 'var(--color-success-green)' : 'var(--color-muted-text)',
-            backgroundColor: enabled ? 'rgba(72, 224, 138, 0.12)' : 'rgba(170, 184, 208, 0.1)',
-            border: `1px solid ${enabled ? 'rgba(72, 224, 138, 0.4)' : 'var(--border-subtle)'}`,
+            color: enabled ? 'var(--color-success-green)' : 'var(--color-arcade-yellow)',
+            backgroundColor: enabled ? 'rgba(72, 224, 138, 0.15)' : 'rgba(255, 226, 41, 0.12)',
+            border: `1px solid ${enabled ? 'rgba(72, 224, 138, 0.4)' : 'rgba(255, 226, 41, 0.4)'}`,
           }}
         >
-          {enabled ? 'Active' : 'Disabled'}
+          {enabled ? 'Active' : 'Unconfigured'}
         </span>
       </div>
 
       {circuitBreaker.open && (
         <div
           style={{
-            padding: '6px 10px',
+            padding: '8px 12px',
             background: 'rgba(255, 83, 100, 0.15)',
             border: '1px solid var(--color-error-red)',
             color: 'var(--color-error-red)',
-            fontSize: 'var(--fs-small)',
+            fontSize: '0.8125rem',
             borderRadius: 'var(--radius-sm)',
           }}
         >
-          ⚠️ Circuit breaker open! Sightengine requests temporarily paused until {new Date(circuitBreaker.until).toLocaleTimeString()}.
+          ⚠️ Circuit breaker open! Sightengine requests temporarily paused {circuitBreaker.until ? `until ${new Date(circuitBreaker.until).toLocaleTimeString()}` : ''}.
         </div>
       )}
 
       <div
         style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
           gap: 'var(--space-s)',
         }}
       >
-        <div style={{ padding: '8px', background: 'rgba(0,0,0,0.2)', borderRadius: 'var(--radius-sm)' }}>
-          <div style={{ fontSize: 'var(--fs-label)', color: 'var(--text-secondary)' }}>Today's Operations</div>
-          <div style={{ fontSize: 'var(--fs-card-title)', fontWeight: 700, color: 'var(--text-primary)' }}>
-            {budget.dailyUsage || 0} / {budget.dailyLimit || 500} ({dailyPercent}%)
+        <div style={{ padding: '10px 14px', background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 'var(--radius-sm)' }}>
+          <div style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '4px' }}>
+            Today's Operations
+          </div>
+          <div style={{ fontSize: '1.15rem', fontWeight: 700, color: 'var(--color-cloud-white)' }}>
+            {dailyUsage} / {dailyLimit} <span style={{ fontSize: '0.85rem', color: dailyPercent > 80 ? 'var(--color-error-red)' : 'var(--color-electric-cyan)' }}>({dailyPercent}%)</span>
           </div>
         </div>
 
-        <div style={{ padding: '8px', background: 'rgba(0,0,0,0.2)', borderRadius: 'var(--radius-sm)' }}>
-          <div style={{ fontSize: 'var(--fs-label)', color: 'var(--text-secondary)' }}>Month's Operations</div>
-          <div style={{ fontSize: 'var(--fs-card-title)', fontWeight: 700, color: 'var(--text-primary)' }}>
-            {budget.monthlyUsage || 0} / {budget.monthlyLimit || 2000} ({monthlyPercent}%)
+        <div style={{ padding: '10px 14px', background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 'var(--radius-sm)' }}>
+          <div style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '4px' }}>
+            Month's Operations
+          </div>
+          <div style={{ fontSize: '1.15rem', fontWeight: 700, color: 'var(--color-cloud-white)' }}>
+            {monthlyUsage} / {monthlyLimit} <span style={{ fontSize: '0.85rem', color: monthlyPercent > 80 ? 'var(--color-error-red)' : 'var(--color-electric-cyan)' }}>({monthlyPercent}%)</span>
           </div>
         </div>
 
-        <div style={{ padding: '8px', background: 'rgba(0,0,0,0.2)', borderRadius: 'var(--radius-sm)' }}>
-          <div style={{ fontSize: 'var(--fs-label)', color: 'var(--text-secondary)' }}>Pending Scan Queue</div>
-          <div style={{ fontSize: 'var(--fs-card-title)', fontWeight: 700, color: queue.pendingFiles > 0 ? 'var(--color-arcade-yellow)' : 'var(--color-electric-cyan)' }}>
-            {queue.pendingFiles || 0} images ({queue.pendingSubmissions || 0} teams)
+        <div style={{ padding: '10px 14px', background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: 'var(--radius-sm)' }}>
+          <div style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '4px' }}>
+            Pending Scan Queue
+          </div>
+          <div style={{ fontSize: '1.15rem', fontWeight: 700, color: pendingFiles > 0 ? 'var(--color-arcade-yellow)' : 'var(--color-electric-cyan)' }}>
+            {pendingFiles} images {pendingSubmissions > 0 ? `(${pendingSubmissions} teams)` : ''}
           </div>
         </div>
       </div>

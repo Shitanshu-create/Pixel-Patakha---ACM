@@ -312,22 +312,43 @@ export const rerunSubmission = async (submissionId, force = false) => {
 export const getStatus = async () => {
   const usageStats = await aiBudget.usage();
 
-  const [pending, processing, failed] = await Promise.all([
+  const [pending, processing, failed, pendingTeams] = await Promise.all([
     Submission.countDocuments({ 'files.aiDetection.status': 'pending' }),
     Submission.countDocuments({ 'files.aiDetection.status': 'processing' }),
     Submission.countDocuments({ 'files.aiDetection.status': 'failed' }),
+    Submission.countDocuments({
+      'files.aiDetection.status': { $in: ['pending', 'processing'] },
+    }),
   ]);
+
+  const dailyUsage = usageStats?.day?.used || 0;
+  const dailyLimit = usageStats?.day?.limit || 500;
+  const monthlyUsage = usageStats?.month?.used || 0;
+  const monthlyLimit = usageStats?.month?.limit || 2000;
 
   return {
     enabled: aiDetectionEnabled,
     circuit: circuitBreaker.open ? 'open' : 'closed',
     circuitReason: circuitBreaker.reason,
+    circuitBreaker: {
+      open: circuitBreaker.open,
+      until: pauseUntil,
+      reason: circuitBreaker.reason,
+    },
     pausedUntil: pauseUntil ? new Date(pauseUntil).toISOString() : null,
     usage: usageStats,
+    budget: {
+      dailyUsage,
+      dailyLimit,
+      monthlyUsage,
+      monthlyLimit,
+    },
     queue: {
       pending,
       processing,
       failed,
+      pendingFiles: pending + processing,
+      pendingSubmissions: pendingTeams,
     },
     thresholds: {
       reviewMin: aiLevelReviewMin,

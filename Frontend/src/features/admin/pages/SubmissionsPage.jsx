@@ -84,32 +84,96 @@ export default function SubmissionsPage() {
     {
       key: 'aiDetection',
       label: 'AI Likelihood',
-      render: (s) => (
-        <AiScoreBadge
-          status={s.aiDetectionSummary?.status}
-          likelihood={s.aiDetectionSummary?.overallLikelihood}
-          level={s.aiDetectionSummary?.level}
-          size="sm"
-        />
-      ),
+      render: (s) => {
+        const fileScores = (s.files || [])
+          .map((f) => f.aiDetection?.percent ?? (f.aiDetection?.score ? Math.round(f.aiDetection.score * 100) : null))
+          .filter((p) => p !== null && !isNaN(p));
+        const fallbackLikelihood = fileScores.length > 0 ? Math.max(...fileScores) : null;
+        const likelihood = s.aiDetectionSummary?.overallLikelihood ?? fallbackLikelihood;
+
+        return (
+          <AiScoreBadge
+            status={s.aiDetectionSummary?.status}
+            likelihood={likelihood}
+            level={s.aiDetectionSummary?.level}
+            size="sm"
+          />
+        );
+      },
     },
     {
       key: 'reviews',
       label: 'Evaluations',
       render: (s) => (
-        <Badge tone={s.reviewCount > 0 ? 'cyan' : 'muted'}>
-          {s.reviewCount || 0} Reviews
-        </Badge>
+        <span
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '6px',
+            padding: '4px 10px',
+            borderRadius: 'var(--radius-sm)',
+            fontSize: '0.8125rem',
+            fontWeight: 700,
+            fontFamily: 'var(--font-label)',
+            textTransform: 'uppercase',
+            letterSpacing: '0.5px',
+            color: s.reviewCount > 0 ? 'var(--color-electric-cyan)' : 'var(--text-secondary)',
+            backgroundColor: s.reviewCount > 0 ? 'rgba(0, 217, 255, 0.15)' : 'rgba(255, 255, 255, 0.05)',
+            border: `1px solid ${s.reviewCount > 0 ? 'rgba(0, 217, 255, 0.45)' : 'var(--border-subtle)'}`,
+            whiteSpace: 'nowrap',
+          }}
+        >
+          <span>💬</span>
+          <span>{s.reviewCount || 0} {s.reviewCount === 1 ? 'Review' : 'Reviews'}</span>
+        </span>
       ),
     },
     {
       key: 'averageScore',
       label: 'Average Score',
-      render: (s) => (
-        <Badge tone={s.averageScore >= 80 ? 'green' : s.averageScore >= 50 ? 'yellow' : 'pink'}>
-          {s.averageScore !== null ? `${s.averageScore} / 100` : 'Not Scored'}
-        </Badge>
-      ),
+      render: (s) => {
+        if (s.averageScore !== null && s.averageScore !== undefined) {
+          const score = Number(s.averageScore);
+          const isHigh = score >= 80;
+          const isMed = score >= 50;
+          const color = isHigh ? 'var(--color-success-green)' : isMed ? 'var(--color-arcade-yellow)' : '#ff4d79';
+          const bg = isHigh ? 'rgba(72, 224, 138, 0.18)' : isMed ? 'rgba(255, 226, 41, 0.18)' : 'rgba(255, 77, 121, 0.18)';
+          const border = isHigh ? 'rgba(72, 224, 138, 0.5)' : isMed ? 'rgba(255, 226, 41, 0.5)' : 'rgba(255, 77, 121, 0.5)';
+          return (
+            <span
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '5px',
+                padding: '4px 12px',
+                borderRadius: 'var(--radius-sm)',
+                fontSize: '0.875rem',
+                fontWeight: 800,
+                fontFamily: 'var(--font-label)',
+                color,
+                backgroundColor: bg,
+                border: `1px solid ${border}`,
+                boxShadow: `0 0 10px ${bg}`,
+                whiteSpace: 'nowrap',
+              }}
+            >
+              <span>{score}</span>
+              <span style={{ fontSize: '0.75rem', opacity: 0.7 }}>/ 100</span>
+            </span>
+          );
+        }
+        return (
+          <span
+            style={{
+              fontSize: '0.8125rem',
+              color: 'var(--text-secondary)',
+              fontStyle: 'italic',
+            }}
+          >
+            Not Scored
+          </span>
+        );
+      },
     },
     {
       key: 'actions',

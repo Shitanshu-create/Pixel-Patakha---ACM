@@ -2,52 +2,75 @@ import React from 'react';
 import { getLevelTone, getStatusTone, formatPercent } from '../../features/common/utils/aiDetection.js';
 
 export const AiScoreBadge = ({ status, likelihood, level, size = 'sm' }) => {
-  if (status && status !== 'completed') {
-    const statusConfig = getStatusTone(status);
+  const hasNumericScore = likelihood !== null && likelihood !== undefined && !isNaN(likelihood);
+  const isCompletedScan = status === 'done' || status === 'completed';
+
+  // If score is present OR scan marked done, show the percentage and tone!
+  if (hasNumericScore || isCompletedScan) {
+    const rawNum = hasNumericScore ? Number(likelihood) : null;
+    const pct = rawNum !== null ? (rawNum <= 1 && rawNum > 0 ? Math.round(rawNum * 100) : Math.round(rawNum)) : null;
+
+    let resolvedLevel = level;
+    if (!resolvedLevel || resolvedLevel === 'unknown') {
+      if (pct !== null) {
+        resolvedLevel = pct >= 70 ? 'high' : pct >= 30 ? 'medium' : 'low';
+      } else {
+        resolvedLevel = 'unknown';
+      }
+    }
+
+    const tone = getLevelTone(resolvedLevel);
+
     return (
       <span
         style={{
           display: 'inline-flex',
           alignItems: 'center',
-          gap: '4px',
-          padding: size === 'sm' ? '2px 8px' : '4px 10px',
+          gap: '6px',
+          padding: size === 'sm' ? '3px 10px' : '5px 12px',
           borderRadius: 'var(--radius-sm)',
-          fontSize: size === 'sm' ? 'var(--fs-label)' : 'var(--fs-small)',
-          fontWeight: 600,
+          fontSize: size === 'sm' ? '0.8125rem' : '0.875rem',
+          fontWeight: 700,
           fontFamily: 'var(--font-label)',
           textTransform: 'uppercase',
-          letterSpacing: '0.04em',
-          color: `var(${statusConfig.colorVar})`,
-          backgroundColor: statusConfig.bgVar,
-          border: `1px solid ${statusConfig.borderVar}`,
+          letterSpacing: '0.5px',
+          color: `var(${tone.colorVar})`,
+          backgroundColor: tone.bgVar,
+          border: `1px solid ${tone.borderVar}`,
+          boxShadow: `0 0 10px ${tone.bgVar}`,
+          whiteSpace: 'nowrap',
         }}
       >
-        {status === 'scanning' && '⏳ '}
-        {statusConfig.shortLabel}
+        <span>{tone.shortLabel}</span>
+        <span style={{ opacity: 0.6 }}>·</span>
+        <span style={{ fontWeight: 800 }}>{pct !== null ? `${pct}%` : formatPercent(likelihood)}</span>
       </span>
     );
   }
 
-  const tone = getLevelTone(level);
+  // Otherwise, render status pill (Pending, Scanning, Skipped, etc.)
+  const statusConfig = getStatusTone(status || 'skipped');
   return (
     <span
       style={{
         display: 'inline-flex',
         alignItems: 'center',
-        gap: '4px',
-        padding: size === 'sm' ? '2px 8px' : '4px 10px',
+        gap: '6px',
+        padding: size === 'sm' ? '3px 10px' : '5px 12px',
         borderRadius: 'var(--radius-sm)',
-        fontSize: size === 'sm' ? 'var(--fs-label)' : 'var(--fs-small)',
+        fontSize: size === 'sm' ? '0.8125rem' : '0.875rem',
         fontWeight: 600,
         fontFamily: 'var(--font-label)',
         textTransform: 'uppercase',
-        letterSpacing: '0.04em',
-        color: `var(${tone.colorVar})`,
-        backgroundColor: tone.bgVar,
-        border: `1px solid ${tone.borderVar}`,
+        letterSpacing: '0.5px',
+        color: `var(${statusConfig.colorVar})`,
+        backgroundColor: statusConfig.bgVar,
+        border: `1px solid ${statusConfig.borderVar}`,
+        whiteSpace: 'nowrap',
       }}
     >
-      {tone.shortLabel}: {formatPercent(likelihood)}
+      {(status === 'scanning' || status === 'processing') && '⏳ '}
+      {statusConfig.shortLabel}
     </span>
   );
 };
