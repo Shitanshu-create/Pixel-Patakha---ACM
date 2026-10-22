@@ -3,8 +3,8 @@ import { ROUTES } from './routes.js';
 export const LANDING_NAV_LINKS = [
   { label: 'About', href: '#about' },
   { label: 'Timeline', href: '#timeline' },
+  { label: 'Judging Criteria', href: '#judging' },
   { label: 'Rules', href: '#rules' },
-  { label: 'Showcase', href: '#showcase' },
   { label: 'FAQ', href: '#faq' },
 ];
 

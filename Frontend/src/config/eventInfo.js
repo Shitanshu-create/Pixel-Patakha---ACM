@@ -70,7 +70,7 @@ export const EVENT_INFO = {
     },
     {
       time: '1:00 PM',
-      stage: 'Submission Closes',
+      stage: 'Submissions Closes',
       details: 'Design sprint ends! All Figma/Canva/XD prototype links and files must be submitted.',
       icon: 'diamond',
     },

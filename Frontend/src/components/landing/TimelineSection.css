@@ -62,7 +62,7 @@
     left: 50%;
     transform: translateX(-50%);
     width: 3px;
-    height: calc(100% - 50px);
+    height: calc(100% - 72px + var(--space-xl));
     background: repeating-linear-gradient(
       to bottom,
       var(--color-electric-cyan),
@@ -103,6 +103,8 @@
 }
 
 .timeline-node__card {
+  position: relative;
+  z-index: 2;
   width: 100%;
   flex: 1;
   display: flex;
