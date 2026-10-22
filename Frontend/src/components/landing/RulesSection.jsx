@@ -18,21 +18,9 @@ export default function RulesSection() {
         </div>
 
         {/* Mandatory Rulebook Notice */}
-        <div
-          data-reveal-item
-          style={{
-            padding: 'var(--space-m) var(--space-l)',
-            background: 'rgba(255, 226, 41, 0.08)',
-            border: '1px solid rgba(255, 226, 41, 0.3)',
-            borderRadius: 'var(--radius-sm)',
-            marginBottom: 'var(--space-xl)',
-            display: 'flex',
-            alignItems: 'center',
-            gap: 'var(--space-m)',
-          }}
-        >
-          <span style={{ fontSize: '1.75rem' }}>📜</span>
-          <p style={{ margin: 0, fontSize: '0.875rem', color: 'var(--color-cloud-white)', lineHeight: 1.6 }}>
+        <div data-reveal-item className="rules-compliance-banner">
+          <span className="rules-compliance-banner__icon" aria-hidden="true">📜</span>
+          <p className="rules-compliance-banner__text">
             <strong>Mandatory Compliance:</strong> Every participating team must strictly adhere to the official rules. Plagiarism, unauthorized AI assistance, or late submissions will result in immediate disqualification without exception.
           </p>
         </div>
@@ -41,8 +29,8 @@ export default function RulesSection() {
         <div className="tech-specs-grid" data-reveal-item>
           {specs.map((item, idx) => (
             <div key={idx} className="tech-spec-card">
-              <span className="tech-spec-card__icon">{item.icon}</span>
-              <div>
+              <span className="tech-spec-card__icon" aria-hidden="true">{item.icon}</span>
+              <div className="tech-spec-card__content">
                 <h4 className="tech-spec-card__title">{item.title}</h4>
                 <p className="tech-spec-card__desc">{item.detail}</p>
               </div>
@@ -50,21 +38,19 @@ export default function RulesSection() {
           ))}
         </div>
 
-        <div className="rules-grid" style={{ marginTop: 'var(--space-xl)' }}>
+        <div className="rules-grid">
           {/* Rules Checklist */}
           <Card accent="cyan" className="rules-card" data-reveal-item>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-s)', marginBottom: 'var(--space-l)' }}>
+            <div className="rules-card__header">
               <Badge tone="cyan">CONDUCT & SUBMISSIONS</Badge>
-              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.25rem', color: 'var(--color-cloud-white)', margin: 0 }}>
-                Participation Code
-              </h3>
+              <h3 className="rules-card__title">Participation Code</h3>
             </div>
 
             <ul className="rules-checklist">
               {EVENT_INFO.rules.map((rule, idx) => (
                 <li key={idx} className="rules-checklist__item">
                   <span className="rules-checklist__bullet" aria-hidden="true">✔</span>
-                  <span>{rule}</span>
+                  <span className="rules-checklist__text">{rule}</span>
                 </li>
               ))}
             </ul>
@@ -72,11 +58,11 @@ export default function RulesSection() {
 
           {/* AI Policy & Warning */}
           <Card accent="pink" className="ai-policy-card" data-reveal-item>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-s)', marginBottom: 'var(--space-s)' }}>
+            <div className="ai-policy-card__header">
               <Badge tone="pink" icon="⚠">STRICT ZERO TOLERANCE</Badge>
             </div>
 
-            <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.35rem', color: 'var(--color-pixel-pink)', margin: 0 }}>
+            <h3 className="ai-policy-card__title">
               {EVENT_INFO.aiPolicy.title}
             </h3>
 
@@ -84,11 +70,11 @@ export default function RulesSection() {
               {EVENT_INFO.aiPolicy.warning}
             </div>
 
-            <div style={{ padding: 'var(--space-m)', background: 'rgba(0,0,0,0.25)', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-subtle)' }}>
-              <h4 style={{ fontFamily: 'var(--font-label)', fontSize: '0.8125rem', color: 'var(--color-arcade-yellow)', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '6px' }}>
+            <div className="ai-policy-card__verification-box">
+              <h4 className="ai-policy-card__verification-title">
                 🔍 Version History & Verification
               </h4>
-              <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.8125rem', color: 'var(--text-secondary)', margin: 0, lineHeight: 1.5 }}>
+              <p className="ai-policy-card__verification-desc">
                 Judges reserve the explicit right to inspect project edit and version history in Figma, Canva, or Adobe XD. External assets (icons, stock photos) must be cited in reference documentation.
               </p>
             </div>

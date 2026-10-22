@@ -33,6 +33,13 @@
   transition: color var(--transition-fast);
 }
 
+@media (max-width: 599px) {
+  .accordion-trigger {
+    padding: var(--space-m);
+    font-size: 1rem;
+  }
+}
+
 .accordion-trigger:hover {
   color: var(--color-electric-cyan);
 }

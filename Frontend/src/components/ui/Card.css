@@ -6,6 +6,15 @@
   position: relative;
   box-shadow: 4px 4px 0 rgba(3, 7, 17, .45);
   transition: transform var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-fast);
+  max-width: 100%;
+  box-sizing: border-box;
+  overflow-wrap: break-word;
+}
+
+@media (max-width: 599px) {
+  .card {
+    padding: var(--space-m);
+  }
 }
 
 .card--interactive:hover {

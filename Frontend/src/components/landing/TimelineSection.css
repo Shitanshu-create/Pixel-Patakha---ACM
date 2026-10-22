@@ -10,6 +10,9 @@
   flex-direction: column;
   gap: var(--space-xl);
   margin-top: var(--space-2xl);
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 @media (min-width: 900px) {
@@ -30,6 +33,8 @@
   align-items: center;
   text-align: center;
   gap: var(--space-m);
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 /* Connecting dotted lines between markers on desktop */
@@ -106,6 +111,8 @@
   position: relative;
   z-index: 2;
   width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -116,6 +123,7 @@
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-sm);
   padding: var(--space-s) var(--space-xs);
+  overflow-wrap: break-word;
   transition: transform var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
 }
 
