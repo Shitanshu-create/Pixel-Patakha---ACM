@@ -101,12 +101,9 @@ export default function TeamLoginPage() {
           </Button>
         </form>
 
-        <div className="auth-footer-links">
+        <div className="auth-footer-links" style={{ justifyContent: 'center' }}>
           <span>
             Don&apos;t have a team yet? <Link to={ROUTES.REGISTER}>Register Team</Link>
-          </span>
-          <span>
-            Staff or Judge? <Link to={ROUTES.STAFF_LOGIN}>Staff Login</Link>
           </span>
         </div>
       </Card>

@@ -13,6 +13,7 @@ import { MAX_FILES, MAX_FILE_SIZE_MB } from '../../../config/env.js';
 export default function SubmissionForm({ onSuccess }) {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [workLinks, setWorkLinks] = useState('');
   const [files, setFiles] = useState([]);
 
   const [fieldErrors, setFieldErrors] = useState({});
@@ -56,6 +57,7 @@ export default function SubmissionForm({ onSuccess }) {
       const submission = await createSubmission({
         title: title.trim(),
         description: description.trim(),
+        workLinks: workLinks.trim(),
         files,
       });
       setShowConfirm(false);
@@ -107,9 +109,25 @@ export default function SubmissionForm({ onSuccess }) {
           </FormField>
 
           <FormField
+            id="sub-links"
+            label="Design & Prototype Links (Figma / Canva / Adobe XD)"
+            hint="Share links to your Figma canvas, Canva presentation, Adobe XD prototype, or cloud documents"
+            error={fieldErrors.workLinks}
+          >
+            <Input
+              id="sub-links"
+              type="url"
+              value={workLinks}
+              onChange={(e) => setWorkLinks(e.target.value)}
+              placeholder="e.g. https://www.figma.com/design/... or https://canva.com/..."
+              error={!!fieldErrors.workLinks}
+            />
+          </FormField>
+
+          <FormField
             id="sub-desc"
-            label="Project Description & Reference Links"
-            hint="Describe your design choices and include required reference links for all external icons, fonts, and inspiration"
+            label="Project Description & Reference Citations"
+            hint="Describe your design choices and include required citations/links for all external assets, icons, fonts, and references"
             error={fieldErrors.description}
           >
             <Textarea
@@ -117,7 +135,7 @@ export default function SubmissionForm({ onSuccess }) {
               rows={4}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="Overview of our user flow and design choices. Reference links: IconPack (feathericons.com), Fonts (fonts.google.com)..."
+              placeholder="Overview of user flows and design system choices. References: Feather Icons, Unsplash photos, Google Fonts..."
             />
           </FormField>
 

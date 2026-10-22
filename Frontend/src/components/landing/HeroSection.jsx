@@ -88,6 +88,10 @@ export default function HeroSection() {
             <span className="hud-chip">
               <span>{EVENT_INFO.venue}</span>
             </span>
+
+            <span className="hud-chip">
+              <span>🎨 Figma · Canva · Adobe XD</span>
+            </span>
           </div>
         </div>
 

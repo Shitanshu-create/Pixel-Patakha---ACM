@@ -1,4 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Pixelify+Sans:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+@font-face {
+  font-family: 'DAS Font';
+  src: url('/fonts/DAS-Font.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
 
 :root {
   /* Colors (design.md §3) */
@@ -34,7 +42,7 @@
   --gradient-cyan-blue:   linear-gradient(135deg, var(--color-electric-cyan), var(--color-pixel-blue));
 
   /* Typography */
-  --font-display: 'Pixelify Sans', 'Trebuchet MS', sans-serif;
+  --font-display: 'DAS Font', 'Trebuchet MS', sans-serif;
   --font-label:   'Inter', Arial, sans-serif;
   --font-body:    'Inter', Arial, sans-serif;
   --fs-hero:      clamp(2.25rem, 7vw, 4.75rem);

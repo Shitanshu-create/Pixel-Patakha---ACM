@@ -24,7 +24,7 @@ export default function Footer() {
 
             <div className="footer__logos">
               <img src="/bvcoe-logo.png" alt="BVCOE Logo" className="footer__logo-img" loading="lazy" decoding="async" />
-              <img src="/DAS-logo.png" alt="DAS Logo" className="footer__logo-img" loading="lazy" decoding="async" />
+              <img src="/DAS-logo-updated.png" alt="DAS Logo" className="footer__logo-img" loading="lazy" decoding="async" />
               <img src="/ACM-logo.png" alt="ACM BVP Logo" className="footer__logo-img" loading="lazy" decoding="async" />
             </div>
           </div>
@@ -35,8 +35,8 @@ export default function Footer() {
             <ul className="footer__list">
               <li><a href="/#about" className="footer__link">About the Event</a></li>
               <li><a href="/#timeline" className="footer__link">Timeline</a></li>
-              <li><a href="/#rules" className="footer__link">Rules & Policy</a></li>
-              <li><a href="/#showcase" className="footer__link">Showcase</a></li>
+              <li><a href="/#judging" className="footer__link">Judging Criteria</a></li>
+              <li><a href="/#rules" className="footer__link">Rules & Specs</a></li>
               <li><a href="/#faq" className="footer__link">FAQ</a></li>
             </ul>
           </div>

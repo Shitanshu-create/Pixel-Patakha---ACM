@@ -5,7 +5,7 @@ import apiResponse from '../utils/apiResponse.js';
 import ApiError from '../utils/ApiError.js';
 
 export const createSubmission = asyncHandler(async (req, res) => {
-  const { title, description } = req.body;
+  const { title, description, workLinks } = req.body;
   const uploadedFiles = req.files || [];
 
   const cleanupFiles = () => {
@@ -36,6 +36,7 @@ export const createSubmission = asyncHandler(async (req, res) => {
       teamId: req.user.id,
       title,
       description,
+      workLinks,
       uploadedFiles,
       reqProtocol: req.protocol,
       reqHost: req.get('host'),

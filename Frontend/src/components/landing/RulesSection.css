@@ -4,6 +4,49 @@
   z-index: 5;
 }
 
+/* Technical Specs Grid */
+.tech-specs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--space-m);
+}
+
+.tech-spec-card {
+  padding: var(--space-m);
+  background: var(--bg-panel);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  display: flex;
+  gap: var(--space-m);
+  align-items: flex-start;
+  transition: transform var(--transition-fast), border-color var(--transition-fast);
+}
+
+.tech-spec-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--color-electric-cyan);
+}
+
+.tech-spec-card__icon {
+  font-size: 1.75rem;
+  line-height: 1;
+}
+
+.tech-spec-card__title {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  color: var(--color-cloud-white);
+  margin: 0 0 var(--space-xs) 0;
+}
+
+.tech-spec-card__desc {
+  font-family: var(--font-body);
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 0;
+}
+
 .rules-grid {
   display: grid;
   grid-template-columns: 1fr;

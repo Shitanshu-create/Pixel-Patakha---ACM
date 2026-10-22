@@ -15,25 +15,9 @@
 @media (min-width: 900px) {
   .timeline-track {
     flex-direction: row;
+    align-items: stretch;
     justify-content: space-between;
-    gap: var(--space-l);
-  }
-
-  .timeline-track::before {
-    content: '';
-    position: absolute;
-    top: 36px;
-    left: 10%;
-    right: 10%;
-    height: 3px;
-    background: repeating-linear-gradient(
-      to right,
-      var(--color-electric-cyan),
-      var(--color-electric-cyan) 8px,
-      transparent 8px,
-      transparent 16px
-    );
-    z-index: 1;
+    gap: var(--space-m);
   }
 }
 
@@ -48,7 +32,52 @@
   gap: var(--space-m);
 }
 
+/* Connecting dotted lines between markers on desktop */
+@media (min-width: 900px) {
+  .timeline-node:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 36px;
+    left: 50%;
+    width: calc(100% + var(--space-m));
+    height: 3px;
+    background: repeating-linear-gradient(
+      to right,
+      var(--color-electric-cyan),
+      var(--color-electric-cyan) 8px,
+      transparent 8px,
+      transparent 16px
+    );
+    z-index: 1;
+    pointer-events: none;
+  }
+}
+
+/* Connecting dotted lines between markers on mobile */
+@media (max-width: 899px) {
+  .timeline-node:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 72px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 3px;
+    height: calc(100% - 50px);
+    background: repeating-linear-gradient(
+      to bottom,
+      var(--color-electric-cyan),
+      var(--color-electric-cyan) 8px,
+      transparent 8px,
+      transparent 16px
+    );
+    z-index: 1;
+    pointer-events: none;
+  }
+}
+
 .timeline-node__marker {
+  position: relative;
+  z-index: 2;
   width: 72px;
   height: 72px;
   background-color: var(--color-deep-navy);
@@ -63,32 +92,42 @@
   font-size: var(--fs-label);
   color: var(--color-arcade-yellow);
   gap: 4px;
+  flex-shrink: 0;
 }
 
 .timeline-node__time {
   color: var(--color-cloud-white);
   font-size: var(--fs-label-xs);
+  font-weight: 700;
+  white-space: nowrap;
 }
 
 .timeline-node__card {
   width: 100%;
-  max-width: 320px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 80px;
   background-color: var(--color-deep-navy);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-sm);
-  padding: var(--space-l);
+  padding: var(--space-s) var(--space-xs);
+  transition: transform var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.timeline-node__card:hover {
+  border-color: var(--color-electric-cyan);
+  box-shadow: 0 4px 20px rgba(0, 217, 255, 0.15);
+  transform: translateY(-2px);
 }
 
 .timeline-node__stage {
   font-family: var(--font-display);
-  font-size: 1.25rem;
+  font-size: 0.95rem;
+  line-height: 1.25;
   color: var(--color-electric-cyan);
-  margin-bottom: var(--space-xs);
-}
-
-.timeline-node__details {
-  font-family: var(--font-body);
-  font-size: var(--fs-small);
-  color: var(--text-secondary);
-  line-height: 1.5;
+  margin: 0;
+  text-align: center;
 }

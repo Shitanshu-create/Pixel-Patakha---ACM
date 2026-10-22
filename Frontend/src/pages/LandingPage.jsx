@@ -1,6 +1,7 @@
 import HeroSection from '../components/landing/HeroSection.jsx';
 import FeatureCards from '../components/landing/FeatureCards.jsx';
 import TimelineSection from '../components/landing/TimelineSection.jsx';
+import JudgingCriteriaSection from '../components/landing/JudgingCriteriaSection.jsx';
 import RulesSection from '../components/landing/RulesSection.jsx';
 // import ShowcaseSection from '../components/landing/ShowcaseSection.jsx';
 import FaqSection from '../components/landing/FaqSection.jsx';
@@ -55,6 +56,7 @@ export default function LandingPage() {
       <HeroSection />
       <FeatureCards />
       <TimelineSection />
+      <JudgingCriteriaSection />
       <RulesSection />
       {/* <ShowcaseSection /> */}
       <FaqSection />

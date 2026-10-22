@@ -31,9 +31,34 @@ export default function SubmissionView({ submission }) {
         Per competition rules, teams are permitted one final design submission. Your entry is securely logged for judging review.
       </Alert>
 
+      {submission.workLinks && (
+        <div style={{ marginBottom: 'var(--space-l)' }}>
+          <h4 style={{ fontFamily: 'var(--font-label)', fontSize: '0.75rem', fontWeight: 700, color: 'var(--color-electric-cyan)', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: 'var(--space-xs)' }}>
+            🔗 PROJECT & PROTOTYPE LINKS
+          </h4>
+          <div style={{ background: 'var(--color-deep-navy)', padding: 'var(--space-m)', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-subtle)', display: 'flex', alignItems: 'center', gap: 'var(--space-s)', flexWrap: 'wrap' }}>
+            <span style={{ fontSize: '1.25rem' }}>🎨</span>
+            <a
+              href={submission.workLinks.startsWith('http') ? submission.workLinks : `https://${submission.workLinks}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                color: 'var(--color-electric-cyan)',
+                textDecoration: 'underline',
+                wordBreak: 'break-all',
+                fontWeight: 600,
+                fontSize: '0.875rem',
+              }}
+            >
+              {submission.workLinks} ↗
+            </a>
+          </div>
+        </div>
+      )}
+
       {submission.description && (
         <div style={{ marginBottom: 'var(--space-l)' }}>
-          <h4 style={{ fontFamily: 'var(--font-label)', fontSize: 'var(--fs-label)', color: 'var(--text-secondary)', marginBottom: 'var(--space-xs)' }}>
+          <h4 style={{ fontFamily: 'var(--font-label)', fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: 'var(--space-xs)' }}>
             DESIGN DESCRIPTION & REFERENCES
           </h4>
           <div style={{ background: 'var(--color-deep-navy)', padding: 'var(--space-m)', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-subtle)', whiteSpace: 'pre-wrap' }}>

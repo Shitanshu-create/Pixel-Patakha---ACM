@@ -98,6 +98,11 @@ const submissionSchema = new mongoose.Schema(
       default: '',
       trim: true,
     },
+    workLinks: {
+      type: String,
+      default: '',
+      trim: true,
+    },
     files: {
       type: [submissionFileSchema],
       required: true,

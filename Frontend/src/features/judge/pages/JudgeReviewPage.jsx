@@ -109,9 +109,34 @@ export default function JudgeReviewPage() {
             </Card>
           )}
 
-          {submission.description && (
+          {submission.workLinks && (
             <Card accent="cyan">
-              <h4 style={{ fontFamily: 'var(--font-label)', fontSize: 'var(--fs-label)', color: 'var(--text-secondary)', marginBottom: 'var(--space-xs)' }}>
+              <h4 style={{ fontFamily: 'var(--font-label)', fontSize: '0.75rem', fontWeight: 700, color: 'var(--color-electric-cyan)', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: 'var(--space-xs)' }}>
+                🔗 PROJECT & PROTOTYPE LINKS
+              </h4>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-s)', flexWrap: 'wrap' }}>
+                <span style={{ fontSize: '1.25rem' }}>🎨</span>
+                <a
+                  href={submission.workLinks.startsWith('http') ? submission.workLinks : `https://${submission.workLinks}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    color: 'var(--color-electric-cyan)',
+                    textDecoration: 'underline',
+                    wordBreak: 'break-all',
+                    fontWeight: 700,
+                    fontSize: '0.9375rem',
+                  }}
+                >
+                  {submission.workLinks} ↗
+                </a>
+              </div>
+            </Card>
+          )}
+
+          {submission.description && (
+            <Card accent="purple">
+              <h4 style={{ fontFamily: 'var(--font-label)', fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: 'var(--space-xs)' }}>
                 PROJECT DESCRIPTION & REFERENCES
               </h4>
               <div style={{ whiteSpace: 'pre-wrap', lineHeight: 1.6, fontSize: 'var(--fs-body)' }}>

@@ -4,7 +4,7 @@ import Review from '../models/Review.model.js';
 import ApiError from '../utils/ApiError.js';
 import { uploadSubmissionFile } from './storage.service.js';
 
-export const createSubmission = async ({ teamId, title, description, uploadedFiles, reqProtocol, reqHost }) => {
+export const createSubmission = async ({ teamId, title, description, workLinks, uploadedFiles, reqProtocol, reqHost }) => {
   const team = await Team.findById(teamId);
   if (!team) {
     throw new ApiError(404, 'Team not found');
@@ -59,6 +59,7 @@ export const createSubmission = async ({ teamId, title, description, uploadedFil
     teamName: team.teamName,
     title: title.trim(),
     description: description ? description.trim() : '',
+    workLinks: workLinks ? workLinks.trim() : '',
     files,
     submittedAt: new Date(),
     aiDetectionSummary: {

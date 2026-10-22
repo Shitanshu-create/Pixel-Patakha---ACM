@@ -20,10 +20,10 @@ export default function TimelineSection() {
     <section id="timeline" className="timeline-section landing-reveal-section" aria-label="Competition Timeline">
       <div className="container">
         <div className="section-header">
-          <div className="section-header__tag">★ RUNTIME SCHEDULE ★</div>
-          <h2 className="section-header__title">The 3-Hour Run</h2>
+          <div className="section-header__tag">★ EVENT DAY SCHEDULE ★</div>
+          <h2 className="section-header__title">Event Day Schedule</h2>
           <p className="section-header__subtitle">
-            Sprint against the clock through three clear phases of creation and mentorship.
+            From morning registration to the final championship judging round.
           </p>
         </div>
 
@@ -37,7 +37,6 @@ export default function TimelineSection() {
 
               <div className="timeline-node__card">
                 <h3 className="timeline-node__stage">{item.stage}</h3>
-                <p className="timeline-node__details">{item.details}</p>
               </div>
             </div>
           ))}
