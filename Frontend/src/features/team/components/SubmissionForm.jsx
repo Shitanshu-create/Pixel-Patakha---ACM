@@ -111,16 +111,16 @@ export default function SubmissionForm({ onSuccess }) {
           <FormField
             id="sub-links"
             label="Design & Prototype Links (Figma / Canva / Adobe XD)"
-            hint="Share links to your Figma canvas, Canva presentation, Adobe XD prototype, or cloud documents"
+            hint="Paste your Figma prototype, Canva presentation, Adobe XD, Google Drive, or cloud document link(s)"
             error={fieldErrors.workLinks}
           >
-            <Input
+            <Textarea
               id="sub-links"
-              type="url"
+              rows={2}
               value={workLinks}
               onChange={(e) => setWorkLinks(e.target.value)}
               placeholder="e.g. https://www.figma.com/design/... or https://canva.com/..."
-              error={!!fieldErrors.workLinks}
+              error={fieldErrors.workLinks}
             />
           </FormField>
 

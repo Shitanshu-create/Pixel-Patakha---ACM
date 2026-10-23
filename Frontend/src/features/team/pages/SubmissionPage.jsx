@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import PageHeader from '../../../components/ui/PageHeader.jsx';
 import Card from '../../../components/ui/Card.jsx';
 import Alert from '../../../components/ui/Alert.jsx';
@@ -15,9 +16,11 @@ import '../styles/team.css';
 export default function SubmissionPage() {
   useDocumentTitle('Design Submission');
   const toast = useToast();
-  const { submission, loading: subLoading, error: subError, refetch } = useMySubmission();
+  const { submission: remoteSubmission, loading: subLoading, error: subError, refetch } = useMySubmission();
   const { competition, loading: compLoading } = useCompetition();
+  const [createdSubmission, setCreatedSubmission] = useState(null);
 
+  const submission = createdSubmission || remoteSubmission;
   const subStatus = getSubmissionStatus(competition);
 
   if (subLoading || compLoading) {
@@ -32,8 +35,11 @@ export default function SubmissionPage() {
     return <ErrorState title="Failed to load submission info" onRetry={refetch} />;
   }
 
-  const handleSuccess = () => {
+  const handleSuccess = (newSub) => {
     toast.success('Your design submission has been recorded!');
+    if (newSub) {
+      setCreatedSubmission(newSub);
+    }
     refetch();
   };
 
@@ -46,7 +52,13 @@ export default function SubmissionPage() {
 
       {/* Case 1: Already submitted */}
       {submission ? (
-        <SubmissionView submission={submission} />
+        <SubmissionView
+          submission={submission}
+          onUpdate={(updated) => {
+            setCreatedSubmission(updated);
+            refetch();
+          }}
+        />
       ) : !subStatus.isOpen ? (
         /* Case 2: Submissions closed */
         <Card accent="pink">

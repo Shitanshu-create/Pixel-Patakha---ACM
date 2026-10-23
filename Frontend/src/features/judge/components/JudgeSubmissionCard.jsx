@@ -3,10 +3,12 @@ import Badge from '../../../components/ui/Badge.jsx';
 import Button from '../../../components/ui/Button.jsx';
 import AiScoreBadge from '../../../components/ui/AiScoreBadge.jsx';
 import { formatDate } from '../../common/utils/formatDate.js';
+import { extractUrls, ClickableLinkPill } from '../../common/utils/linkUtils.jsx';
 
 export default function JudgeSubmissionCard({ submission }) {
   const isReviewed = submission.hasReviewed;
   const aiSummary = submission.aiDetectionSummary;
+  const links = extractUrls(submission.workLinks, submission.description);
 
   return (
     <Card
@@ -30,6 +32,15 @@ export default function JudgeSubmissionCard({ submission }) {
           Submitted: {formatDate(submission.submittedAt)}
         </span>
       </div>
+
+      {/* Clickable Prototype Links on Card */}
+      {links.length > 0 && (
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', margin: '4px 0' }}>
+          {links.map((lnk, idx) => (
+            <ClickableLinkPill key={idx} link={lnk} size="sm" />
+          ))}
+        </div>
+      )}
 
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 'auto', borderTop: '1px solid var(--border-subtle)', paddingTop: 'var(--space-m)', flexWrap: 'wrap', gap: 'var(--space-xs)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-s)' }}>

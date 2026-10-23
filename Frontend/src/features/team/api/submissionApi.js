@@ -20,7 +20,12 @@ export const getMySubmission = async () => {
   return await axiosClient.get('/submissions/me');
 };
 
+export const updateWorkLinks = async (workLinks) => {
+  return await axiosClient.patch('/submissions/me/links', { workLinks });
+};
+
 export default {
   createSubmission,
   getMySubmission,
+  updateWorkLinks,
 };

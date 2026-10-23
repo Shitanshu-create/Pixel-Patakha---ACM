@@ -97,6 +97,27 @@ export const getMySubmission = async (teamId) => {
   return submission;
 };
 
+export const updateWorkLinks = async (teamId, workLinks) => {
+  const submission = await Submission.findOne({ team: teamId });
+  if (!submission) {
+    throw new ApiError(404, 'No submission found for this team');
+  }
+
+  submission.workLinks = workLinks ? workLinks.trim() : '';
+  await submission.save();
+
+  const subObj = submission.toObject();
+  delete subObj.aiDetectionSummary;
+  if (Array.isArray(subObj.files)) {
+    subObj.files = subObj.files.map((file) => {
+      const { aiDetection, ...rest } = file;
+      return rest;
+    });
+  }
+
+  return subObj;
+};
+
 export const getSubmissionById = async (id) => {
   const submission = await Submission.findById(id);
   if (!submission) {
@@ -173,6 +194,7 @@ export const getAdminSubmissionWithReviews = async (submissionId) => {
 export default {
   createSubmission,
   getMySubmission,
+  updateWorkLinks,
   getSubmissionById,
   getJudgeSubmissions,
   getAdminSubmissions,

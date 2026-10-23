@@ -1,11 +1,37 @@
+import { useState } from 'react';
 import Card from '../../../components/ui/Card.jsx';
 import Badge from '../../../components/ui/Badge.jsx';
 import Alert from '../../../components/ui/Alert.jsx';
+import Button from '../../../components/ui/Button.jsx';
+import Input from '../../../components/ui/Input.jsx';
 import { formatDate } from '../../common/utils/formatDate.js';
 import { formatFileSize } from '../../common/utils/formatFileSize.js';
+import { extractUrls, ClickableLinkPill, LinkifiedText } from '../../common/utils/linkUtils.jsx';
+import { updateWorkLinks } from '../api/submissionApi.js';
 
-export default function SubmissionView({ submission }) {
+export default function SubmissionView({ submission, onUpdate }) {
+  const [isEditingLinks, setIsEditingLinks] = useState(false);
+  const [linksInput, setLinksInput] = useState(submission?.workLinks || '');
+  const [isSaving, setIsSaving] = useState(false);
+  const [saveError, setSaveError] = useState('');
+
   if (!submission) return null;
+
+  const links = extractUrls(submission.workLinks, submission.description);
+
+  const handleSaveLinks = async () => {
+    setIsSaving(true);
+    setSaveError('');
+    try {
+      const res = await updateWorkLinks(linksInput.trim());
+      setIsEditingLinks(false);
+      onUpdate?.(res);
+    } catch (err) {
+      setSaveError(err.message || 'Failed to update links');
+    } finally {
+      setIsSaving(false);
+    }
+  };
 
   return (
     <Card accent="green">
@@ -31,38 +57,83 @@ export default function SubmissionView({ submission }) {
         Per competition rules, teams are permitted one final design submission. Your entry is securely logged for judging review.
       </Alert>
 
-      {submission.workLinks && (
-        <div style={{ marginBottom: 'var(--space-l)' }}>
-          <h4 style={{ fontFamily: 'var(--font-label)', fontSize: '0.75rem', fontWeight: 700, color: 'var(--color-electric-cyan)', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: 'var(--space-xs)' }}>
+      {/* Project & Prototype Links Section */}
+      <div style={{ marginBottom: 'var(--space-l)' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 'var(--space-xs)', flexWrap: 'wrap', gap: 'var(--space-xs)' }}>
+          <h4 style={{ fontFamily: 'var(--font-label)', fontSize: '0.75rem', fontWeight: 700, color: 'var(--color-electric-cyan)', textTransform: 'uppercase', letterSpacing: '0.5px', margin: 0 }}>
             🔗 PROJECT & PROTOTYPE LINKS
           </h4>
-          <div style={{ background: 'var(--color-deep-navy)', padding: 'var(--space-m)', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-subtle)', display: 'flex', alignItems: 'center', gap: 'var(--space-s)', flexWrap: 'wrap' }}>
-            <span style={{ fontSize: '1.25rem' }}>🎨</span>
-            <a
-              href={submission.workLinks.startsWith('http') ? submission.workLinks : `https://${submission.workLinks}`}
-              target="_blank"
-              rel="noopener noreferrer"
+          {!isEditingLinks && (
+            <button
+              type="button"
+              onClick={() => {
+                setLinksInput(submission.workLinks || '');
+                setIsEditingLinks(true);
+              }}
               style={{
-                color: 'var(--color-electric-cyan)',
+                background: 'none',
+                border: 'none',
+                color: 'var(--color-arcade-yellow)',
+                fontSize: '0.75rem',
+                fontFamily: 'var(--font-label)',
+                cursor: 'pointer',
                 textDecoration: 'underline',
-                wordBreak: 'break-all',
-                fontWeight: 600,
-                fontSize: '0.875rem',
+                padding: '2px 4px',
               }}
             >
-              {submission.workLinks} ↗
-            </a>
-          </div>
+              {links.length > 0 ? '✏ Edit Links' : '+ Add Prototype Link'}
+            </button>
+          )}
         </div>
-      )}
+
+        {isEditingLinks ? (
+          <div style={{ background: 'var(--color-deep-navy)', padding: 'var(--space-m)', borderRadius: 'var(--radius-sm)', border: '1px solid var(--color-electric-cyan)' }}>
+            <p style={{ fontSize: 'var(--fs-small)', color: 'var(--text-secondary)', marginBottom: 'var(--space-s)' }}>
+              Paste Figma, Canva, Adobe XD, or Drive links (separated by spaces or newlines):
+            </p>
+            <Input
+              value={linksInput}
+              onChange={(e) => setLinksInput(e.target.value)}
+              placeholder="e.g. https://www.figma.com/design/... or https://canva.com/..."
+              style={{ marginBottom: 'var(--space-s)' }}
+            />
+            {saveError && <p style={{ color: '#ff4d79', fontSize: '0.8rem', marginBottom: 'var(--space-s)' }}>{saveError}</p>}
+            <div style={{ display: 'flex', gap: 'var(--space-s)' }}>
+              <Button size="sm" variant="primary" loading={isSaving} onClick={handleSaveLinks}>
+                Save Links
+              </Button>
+              <Button size="sm" variant="ghost" onClick={() => setIsEditingLinks(false)}>
+                Cancel
+              </Button>
+            </div>
+          </div>
+        ) : (
+          <div style={{ background: 'var(--color-deep-navy)', padding: 'var(--space-m)', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-subtle)', display: 'flex', alignItems: 'center', gap: 'var(--space-s)', flexWrap: 'wrap' }}>
+            {links.length > 0 ? (
+              links.map((lnk, idx) => (
+                <ClickableLinkPill key={idx} link={lnk} size="md" />
+              ))
+            ) : (
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', flexWrap: 'wrap', gap: 'var(--space-s)' }}>
+                <span style={{ fontSize: 'var(--fs-small)', color: 'var(--text-secondary)' }}>
+                  No clickable prototype link added yet.
+                </span>
+                <Button size="sm" variant="secondary" onClick={() => setIsEditingLinks(true)}>
+                  + Add Figma / Canva Link
+                </Button>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
 
       {submission.description && (
         <div style={{ marginBottom: 'var(--space-l)' }}>
           <h4 style={{ fontFamily: 'var(--font-label)', fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-secondary)', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: 'var(--space-xs)' }}>
             DESIGN DESCRIPTION & REFERENCES
           </h4>
-          <div style={{ background: 'var(--color-deep-navy)', padding: 'var(--space-m)', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-subtle)', whiteSpace: 'pre-wrap' }}>
-            {submission.description}
+          <div style={{ background: 'var(--color-deep-navy)', padding: 'var(--space-m)', borderRadius: 'var(--radius-sm)', border: '1px solid var(--border-subtle)', whiteSpace: 'pre-wrap', lineHeight: 1.6, fontSize: 'var(--fs-body)' }}>
+            <LinkifiedText text={submission.description} />
           </div>
         </div>
       )}

@@ -10,6 +10,7 @@ import AiScoreBadge from '../../../components/ui/AiScoreBadge.jsx';
 import useAdminSubmissions from '../hooks/useAdminSubmissions.js';
 import { formatDate } from '../../common/utils/formatDate.js';
 import useDocumentTitle from '../../common/hooks/useDocumentTitle.js';
+import { extractUrls, ClickableLinkPill } from '../../common/utils/linkUtils.jsx';
 import '../styles/admin.css';
 
 export default function SubmissionsPage() {
@@ -70,6 +71,23 @@ export default function SubmissionsPage() {
       key: 'title',
       label: 'Design Title',
       render: (s) => s.title,
+    },
+    {
+      key: 'links',
+      label: 'Prototype Links',
+      render: (s) => {
+        const links = extractUrls(s.workLinks, s.description);
+        if (links.length === 0) {
+          return <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', fontStyle: 'italic' }}>No link</span>;
+        }
+        return (
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
+            {links.map((lnk, idx) => (
+              <ClickableLinkPill key={idx} link={lnk} size="sm" />
+            ))}
+          </div>
+        );
+      },
     },
     {
       key: 'files',

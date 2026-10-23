@@ -75,7 +75,14 @@ export const getMySubmission = asyncHandler(async (req, res) => {
   return apiResponse(res, 200, 'Team submission fetched successfully', submission);
 });
 
+export const updateWorkLinks = asyncHandler(async (req, res) => {
+  const { workLinks } = req.body;
+  const submission = await submissionService.updateWorkLinks(req.user.id, workLinks);
+  return apiResponse(res, 200, 'Prototype links updated successfully', submission);
+});
+
 export default {
   createSubmission,
   getMySubmission,
+  updateWorkLinks,
 };

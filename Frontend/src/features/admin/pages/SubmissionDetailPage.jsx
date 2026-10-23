@@ -10,6 +10,7 @@ import AiScanCard from '../components/AiScanCard.jsx';
 import { getSubmissionById } from '../api/adminApi.js';
 import { formatDate } from '../../common/utils/formatDate.js';
 import useDocumentTitle from '../../common/hooks/useDocumentTitle.js';
+import { extractUrls, ClickableLinkPill, LinkifiedText } from '../../common/utils/linkUtils.jsx';
 import { ROUTES } from '../../../config/routes.js';
 
 export default function SubmissionDetailPage() {
@@ -102,31 +103,23 @@ export default function SubmissionDetailPage() {
           )}
         </Card>
 
-        {/* Project Links (Figma / Canva / XD) */}
-        {submission.workLinks && (
-          <Card accent="cyan">
-            <h4 style={{ fontFamily: 'var(--font-label)', fontSize: '0.75rem', fontWeight: 700, color: 'var(--color-electric-cyan)', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: 'var(--space-xs)' }}>
-              🔗 PROJECT & PROTOTYPE LINKS
-            </h4>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-s)', flexWrap: 'wrap' }}>
-              <span style={{ fontSize: '1.25rem' }}>🎨</span>
-              <a
-                href={submission.workLinks.startsWith('http') ? submission.workLinks : `https://${submission.workLinks}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  color: 'var(--color-electric-cyan)',
-                  textDecoration: 'underline',
-                  wordBreak: 'break-all',
-                  fontWeight: 700,
-                  fontSize: '0.9375rem',
-                }}
-              >
-                {submission.workLinks} ↗
-              </a>
-            </div>
-          </Card>
-        )}
+        {/* Project & Prototype Links */}
+        {(() => {
+          const links = extractUrls(submission.workLinks, submission.description);
+          if (links.length === 0) return null;
+          return (
+            <Card accent="cyan">
+              <h4 style={{ fontFamily: 'var(--font-label)', fontSize: '0.75rem', fontWeight: 700, color: 'var(--color-electric-cyan)', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: 'var(--space-s)' }}>
+                🔗 PROJECT & PROTOTYPE LINKS ({links.length})
+              </h4>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-s)', flexWrap: 'wrap' }}>
+                {links.map((lnk, idx) => (
+                  <ClickableLinkPill key={idx} link={lnk} size="md" />
+                ))}
+              </div>
+            </Card>
+          );
+        })()}
 
         {/* Project Description */}
         {submission.description && (
@@ -135,7 +128,7 @@ export default function SubmissionDetailPage() {
               DESCRIPTION & REFERENCES
             </h4>
             <p style={{ whiteSpace: 'pre-wrap', lineHeight: 1.6, fontSize: 'var(--fs-body)' }}>
-              {submission.description}
+              <LinkifiedText text={submission.description} />
             </p>
           </Card>
         )}
